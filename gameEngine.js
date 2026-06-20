@@ -1,4 +1,5 @@
 // gameEngine.js
+import { STORY } from './story.js';
 
 export class GameEngine {
     constructor(uiController) {
@@ -113,7 +114,7 @@ export class GameEngine {
 
             if (outcome.nextScenario) {
                 setTimeout(() => {
-                    this.startScenario(outcome.nextScenario);
+                    this.startScenario(STORY[outcome.nextScenario]);
                 }, 2000);
             } else {
                 this.ui.logSystem("Ende der aktuellen Mission. Wir warten auf neue Befehle.");
