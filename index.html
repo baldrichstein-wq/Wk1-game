@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Westfront 1916 - Ein WK1 Pen & Paper</title>
+    <!-- Fonts: Typewriter style for documents, gritty look -->
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Cutive+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="overlay"></div> <!-- Für Schmutz/Kratzer/Film-Effekt -->
+
+    <!-- Start Screen -->
+    <div id="start-screen" class="screen">
+        <div class="content-box">
+            <h1>WESTFRONT 1916</h1>
+            <p class="subtitle">Ein kooperatives Pen & Paper Rollenspiel</p>
+            <div class="btn-group">
+                <button id="btn-start" class="btn">Feldzug beginnen</button>
+                <button id="btn-hof" class="btn">Gefallene Helden</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Character Creator -->
+    <div id="char-creator-screen" class="screen hidden">
+        <div class="content-box">
+            <h2>Musterung</h2>
+            <div class="form-group">
+                <label for="player-count">Anzahl der Rekruten (1 für Solo, 2-4 für Koop):</label>
+                <select id="player-count" class="input-field">
+                    <option value="1">1 Rekrut</option>
+                    <option value="2">2 Rekruten</option>
+                    <option value="3">3 Rekruten</option>
+                    <option value="4">4 Rekruten</option>
+                </select>
+            </div>
+            
+            <div id="player-forms"></div>
+            
+            <button id="btn-confirm-chars" class="btn" style="margin-top: 20px;">An die Front</button>
+        </div>
+    </div>
+
+    <!-- Main Game Interface -->
+    <div id="game-container" class="screen hidden">
+        <header>
+            <h2>Westfront 1916</h2>
+            <div id="meta-controls">
+                <button id="btn-settings" class="btn-small">Optionen</button>
+            </div>
+        </header>
+
+        <main>
+            <!-- Stats Panel (Left/Top) -->
+            <section id="stats-panel">
+                <!-- Dynamically filled with player cards -->
+            </section>
+
+            <!-- Main Log Panel (Center) -->
+            <section id="log-panel">
+                <div id="game-log"></div>
+            </section>
+
+            <!-- Control Panel (Bottom) -->
+            <section id="control-panel">
+                <div class="command-line">
+                    <span class="prompt-arrow">></span>
+                    <input type="text" id="user-input" autocomplete="off" placeholder="Was tut ihr? (Tippe Befehle...)" disabled>
+                    <button id="btn-submit" disabled>Ausführen</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>
