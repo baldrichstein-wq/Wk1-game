@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Westfront 1916 - Ein WK1 Pen & Paper</title>
+    <title>WK1 Pen&Paper</title>
     <!-- Fonts: Typewriter style for documents, gritty look -->
     <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Cutive+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -14,10 +14,11 @@
     <!-- Start Screen -->
     <div id="start-screen" class="screen">
         <div class="content-box">
-            <h1>WESTFRONT 1916</h1>
+            <h1>WK1 Pen&Paper</h1>
             <p class="subtitle">Ein kooperatives Pen & Paper Rollenspiel</p>
             <div class="btn-group">
-                <button id="btn-start" class="btn">Feldzug beginnen</button>
+                <button id="btn-continue" class="btn hidden" style="border-color: var(--accent-red); color: var(--accent-red);">Spiel fortsetzen</button>
+                <button id="btn-start" class="btn">Neuen Feldzug beginnen</button>
                 <button id="btn-hof" class="btn">Gefallene Helden</button>
             </div>
         </div>
@@ -27,6 +28,28 @@
     <div id="char-creator-screen" class="screen hidden">
         <div class="content-box">
             <h2>Musterung</h2>
+            <div class="form-group">
+                <label for="faction-select">Fraktion (Gilt für die gesamte Gruppe):</label>
+                <select id="faction-select" class="input-field" style="margin-bottom: 15px;">
+                    <option value="de">Deutsches Reich (+1 Waffenschaden)</option>
+                    <option value="fr">Frankreich (+5 Maximale Moral)</option>
+                    <option value="gb">Großbritannien (+5 Start-XP pro Rekrut)</option>
+                    <option value="be">Belgien (1 Punkt automatische Schadensreduktion)</option>
+                    <option value="at">Österreich-Ungarn (+15 Start-Versorgungspunkte im HQ)</option>
+                    <option value="ru">Russland (+5 Maximale HP pro Rekrut)</option>
+                    <option value="it">Italien (+3 Maximale Munition pro Rekrut)</option>
+                </select>
+            </div>
+            <div id="faction-info-box" style="margin-bottom: 20px; padding: 15px; border: 1px dashed var(--border-color); background: rgba(0,0,0,0.3); text-align: left; font-size: 0.9em; line-height: 1.4;">
+                <!-- Dynamically filled with historical recruitment info -->
+            </div>
+            <div id="front-select-group" class="form-group hidden" style="margin-bottom: 15px;">
+                <label for="front-select">Einsatzfront (Nur für Deutsches Reich):</label>
+                <select id="front-select" class="input-field">
+                    <option value="west">Westfront (Belgien, Verdun, Kaiserschlacht)</option>
+                    <option value="ost">Ostfront (Tannenberg, Masuren, Brest-Litowsk)</option>
+                </select>
+            </div>
             <div class="form-group">
                 <label for="player-count">Anzahl der Rekruten (1 für Solo, 2-4 für Koop):</label>
                 <select id="player-count" class="input-field">
@@ -46,8 +69,9 @@
     <!-- Main Game Interface -->
     <div id="game-container" class="screen hidden">
         <header>
-            <h2>Westfront 1916</h2>
+            <h2>WK1 Pen&Paper</h2>
             <div id="meta-controls">
+                <button id="btn-skills" class="btn-small">Fähigkeiten</button>
                 <button id="btn-settings" class="btn-small">Optionen</button>
             </div>
         </header>
@@ -72,6 +96,81 @@
                 </div>
             </section>
         </main>
+    </div>
+
+    <!-- Skill Tree Modal -->
+    <div id="skill-modal" class="screen hidden" style="background: rgba(0,0,0,0.85); z-index: 100;">
+        <div class="content-box" style="max-width: 900px;">
+            <h2>Fähigkeiten (Skill Tree)</h2>
+            
+            <div style="margin-bottom: 20px;">
+                <label for="skill-player-select" style="color: var(--accent-green); font-weight: bold;">Rekrut auswählen:</label>
+                <select id="skill-player-select" class="input-field" style="width: auto; margin-left: 10px;"></select>
+                <span id="skill-points-display" style="margin-left: 20px; font-weight: bold; color: var(--accent-red);">XP: 0 | Level: 1 | Skill-Punkte: 0</span>
+            </div>
+
+            <div id="skill-tree-container" style="display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; margin-bottom: 30px;">
+                <!-- Dynamically filled with skill nodes -->
+            </div>
+            
+            <button id="btn-close-skills" class="btn">Schließen</button>
+        </div>
+    </div>
+
+    <!-- Armory Modal -->
+    <div id="armory-modal" class="screen hidden" style="background: rgba(0,0,0,0.9); z-index: 60;">
+        <div class="content-box">
+            <h2>Ausrüstungskammer (Shop)</h2>
+            <p class="subtitle">Verfügbare Versorgungspunkte (VP): <span id="supply-points-display" style="color: var(--accent-red); font-weight: bold;">0</span></p>
+            
+            <div id="armory-player-select" style="margin-bottom: 20px; display: flex; gap: 15px; justify-content: center;">
+                <!-- Dynamically filled with living players -->
+            </div>
+
+            <div id="armory-items-container" style="display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; margin-bottom: 30px;">
+                <!-- Dynamically filled with items from items.js -->
+            </div>
+            
+            <button id="btn-close-armory" class="btn">Schließen</button>
+        </div>
+    </div>
+
+    <!-- HQ Screen -->
+    <div id="hq-screen" class="screen hidden" style="background: rgba(0,0,0,0.9); z-index: 50;">
+        <div class="content-box">
+            <h2 id="hq-title">Hauptquartier - Winterquartier</h2>
+            <p class="subtitle">Zeit zum Rasten, Heilen und Verstärken.</p>
+            
+            <div id="hq-status" style="margin-bottom: 20px;">
+                <!-- Status of squad -->
+            </div>
+
+            <div class="btn-group">
+                <button id="btn-hq-heal" class="btn">Kameraden heilen (Moral +2, HP +5)</button>
+                <button id="btn-hq-skills" class="btn">Fähigkeiten erlernen</button>
+                <button id="btn-hq-armory" class="btn">Ausrüstungskammer</button>
+                <button id="btn-hq-replace" class="btn">Gefallene ersetzen</button>
+            </div>
+            
+            <button id="btn-hq-next-year" class="btn" style="margin-top: 30px; border-color: var(--accent-red); color: var(--accent-red);">Nächstes Kriegsjahr beginnen</button>
+        </div>
+    </div>
+
+    <!-- Gefallene Helden (Ehrenfriedhof) Modal -->
+    <div id="hof-modal" class="screen hidden" style="background: rgba(0,0,0,0.92); z-index: 120;">
+        <div class="content-box" style="max-width: 800px; border-color: var(--accent-red);">
+            <h2>Ehrenfriedhof</h2>
+            <p class="subtitle" style="color: var(--accent-red);">Im Gedenken an die gefallenen Soldaten</p>
+            
+            <div id="hof-container" class="hof-list-container">
+                <!-- Dynamically filled with fallen heroes -->
+            </div>
+            
+            <div class="btn-group" style="margin-top: 20px;">
+                <button id="btn-close-hof" class="btn">Zurück</button>
+                <button id="btn-clear-hof" class="btn" style="border-color: var(--accent-red); color: var(--accent-red); font-size: 0.9em;">Friedhof leeren</button>
+            </div>
+        </div>
     </div>
 
     <script type="module" src="main.js"></script>
