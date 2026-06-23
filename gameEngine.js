@@ -1,7 +1,7 @@
 // gameEngine.js
 import { STORY } from './story.js';
 import { ITEMS } from './items.js';
-import { SKILL_TREE } from './player.js';
+import { SKILL_TREE, CLASSES } from './player.js';
 
 export class GameEngine {
     constructor(uiController) {
@@ -272,6 +272,35 @@ export class GameEngine {
                 if (anyLevelUp) {
                     this.ui.logSystem(`Nutzt den "Fähigkeiten" Button um neue Skills zu lernen!`);
                 }
+                this.ui.updateStats();
+            }
+
+            // === CLASS GRANT: Assign class after training ===
+            if (outcome.grantClass) {
+                const classId = outcome.grantClass;
+                const classData = CLASSES[classId];
+                const className = classData ? classData.name : classId;
+
+                this.players.forEach(p => {
+                    if (!p.isDead) {
+                        p.setClass(classId);
+                    }
+                });
+
+                // Dramatic promotion message
+                const promotionMessages = {
+                    infantry: '⚔️ Die Ausbilder erkennen euren Kampfgeist. Ihr werdet als INFANTERIST eingestuft.',
+                    medic: '🏥 Eure Fürsorge für die Kameraden hat euch ausgezeichnet. Ihr werdet als SANITÄTER eingestuft.',
+                    sniper: '🎯 Euer Auge kennt keine Gnade. Ihr werdet als SCHARFSCHÜTZE eingestuft.',
+                    engineer: '🔧 Euer Ingenieurgeist ist unübertroffen. Ihr werdet als PIONIER eingestuft.',
+                    fernmelder: '📡 Eure Kommunikationsfähigkeiten sind tadellos. Ihr werdet als FERNMELDER eingestuft.',
+                    standschuetze: '🏔️ Das Gebirge gehört euch. Ihr werdet als STANDSCHÜTZE eingestuft.'
+                };
+                const msg = promotionMessages[classId] || `Ihr werdet als ${className} eingestuft.`;
+                this.ui.logSuccess(`\n${'═'.repeat(50)}`);
+                this.ui.logSuccess(msg);
+                this.ui.logSuccess(`Klasse freigeschaltet: ${className}`);
+                this.ui.logSuccess(`${'═'.repeat(50)}\n`);
                 this.ui.updateStats();
             }
 

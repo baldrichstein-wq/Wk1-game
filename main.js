@@ -560,13 +560,6 @@ class UIController {
             }
         }
 
-        let classOptions = '';
-        for (const [key, val] of Object.entries(CLASSES)) {
-            if (!val.requiresFaction || val.requiresFaction.includes(faction)) {
-                classOptions += `<option value="${key}">${val.name}</option>`;
-            }
-        }
-
         const regiments = HISTORICAL_REGIMENTS[faction] || ["1. Infanterie-Regiment"];
         let regimentOptions = '';
         regiments.forEach(r => {
@@ -582,16 +575,13 @@ class UIController {
                         <input type="text" id="p${i}-name" class="input-field" placeholder="Name" value="Soldat ${i}">
                     </div>
                     <div class="form-group">
-                        <label for="p${i}-class">Ausbildung (Klasse):</label>
-                        <select id="p${i}-class" class="input-field">
-                            ${classOptions}
-                        </select>
-                    </div>
-                    <div class="form-group">
                         <label for="p${i}-regiment">Regiment:</label>
                         <select id="p${i}-regiment" class="input-field">
                             ${regimentOptions}
                         </select>
+                    </div>
+                    <div class="class-notice">
+                        <span>⚔️ Klasse wird durch die Grundausbildung vergeben.</span>
                     </div>
                 </div>
             `;
@@ -612,9 +602,9 @@ class UIController {
 
         for (let i = 1; i <= count; i++) {
             const name = document.getElementById(`p${i}-name`).value || `Soldat ${i}`;
-            const classId = document.getElementById(`p${i}-class`).value;
             const regiment = document.getElementById(`p${i}-regiment`).value;
-            const player = new Player(i, name, classId, this.faction, regiment);
+            // All players start as 'recruit' — class is assigned during training
+            const player = new Player(i, name, 'recruit', this.faction, regiment);
             if (this.faction === 'gb') {
                 player.gainXp(5); // GB XP Bonus
             }

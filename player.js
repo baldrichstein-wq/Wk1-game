@@ -98,6 +98,13 @@ export const SKILL_TREE = {
 };
 
 export const CLASSES = {
+    recruit: {
+        name: "Rekrut",
+        hp: 20, maxHp: 20,
+        morale: 15, maxMorale: 15,
+        ammo: 8, maxAmmo: 8,
+        desc: "Unausgebildeter Soldat. Klasse wird durch die Grundausbildung vergeben."
+    },
     infantry: {
         name: "Infanterist",
         hp: 20, maxHp: 20,
@@ -144,19 +151,16 @@ export const CLASSES = {
 };
 
 export class Player {
-    constructor(id, name, classId, faction = 'de', regiment = '') {
+    constructor(id, name, classId = 'recruit', faction = 'de', regiment = '') {
         this.id = id;
         this.name = name;
-        this.classId = classId;
         this.faction = faction;
         this.regiment = regiment;
-        const classData = CLASSES[classId];
-        this.className = classData.name;
         
-        // Base stats
+        // Base stats (all recruits start equal)
         this.maxHp = 20;
         this.maxMorale = 50;
-        this.maxAmmo = 10;
+        this.maxAmmo = 8;
         this.damageReduction = 0;
         this.bonusDamage = 0;
 
@@ -168,22 +172,43 @@ export class Player {
 
         this.hp = this.maxHp;
         this.morale = this.maxMorale;
-        this.maxAmmo = classData.maxAmmo;
         if (this.faction === 'it') this.maxAmmo += 3;
         this.ammo = this.maxAmmo;
         
-        // Neu: XP und Skills
+        // XP und Skills
         this.xp = 0;
         this.level = 1;
         this.skillPoints = 0;
         this.unlockedSkills = [];
         this.inventory = [];
-        
         this.isDead = false;
+
+        // Class is assigned after training
+        this.setClass(classId);
+    }
+
+    /**
+     * Assign or change the player's class.
+     * Applies class-specific stat adjustments relative to base recruit stats.
+     */
+    setClass(classId) {
+        const classData = CLASSES[classId];
+        if (!classData) return;
+        const wasRecruit = this.classId === 'recruit' || !this.classId;
+        this.classId = classId;
+        this.className = classData.name;
+
+        if (classId === 'recruit') return; // No extra stats for recruits
+
+        // Apply class-specific ammo
+        this.maxAmmo = classData.maxAmmo;
+        if (this.faction === 'it') this.maxAmmo += 3;
+        this.ammo = Math.min(this.ammo, this.maxAmmo); // Don't exceed new max
+        if (wasRecruit) this.ammo = this.maxAmmo;
     }
 
     static fromJSON(json) {
-        const p = new Player(json.id, json.name, json.classId, json.faction, json.regiment);
+        const p = new Player(json.id, json.name, json.classId || 'recruit', json.faction, json.regiment);
         p.hp = json.hp;
         p.maxHp = json.maxHp;
         p.morale = json.morale;
@@ -196,6 +221,8 @@ export class Player {
         p.skillPoints = json.skillPoints || 0;
         p.unlockedSkills = json.unlockedSkills || [];
         p.inventory = json.inventory || [];
+        p.damageReduction = json.damageReduction || 0;
+        p.bonusDamage = json.bonusDamage || 0;
         return p;
     }
 
