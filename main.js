@@ -398,8 +398,8 @@ class UIController {
         const alivePlayers = this.players.filter(p => !p.isDead);
         if (alivePlayers.length === 0) return;
         
-        let selectedPlayerId = playerSelect.dataset.selectedId;
-        if (!selectedPlayerId || !alivePlayers.find(p => p.id === selectedPlayerId)) {
+        let selectedPlayerId = parseInt(playerSelect.dataset.selectedId);
+        if (isNaN(selectedPlayerId) || !alivePlayers.find(p => p.id === selectedPlayerId)) {
             selectedPlayerId = alivePlayers[0].id;
             playerSelect.dataset.selectedId = selectedPlayerId;
         }
