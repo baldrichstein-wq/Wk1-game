@@ -170,6 +170,25 @@ h2 { font-size: 2em; }
     background: rgba(0,0,0,0.3);
 }
 
+.class-notice {
+    border: 1px solid #a88a32;
+    background: rgba(168, 138, 50, 0.1);
+    padding: 10px 14px;
+    margin-top: 10px;
+    border-radius: 2px;
+    font-style: italic;
+    color: #a88a32;
+    font-size: 0.95em;
+    text-align: center;
+    animation: subtlePulse 3s ease-in-out infinite;
+}
+
+@keyframes subtlePulse {
+    0%, 100% { border-color: #a88a32; }
+    50% { border-color: #d4af5a; box-shadow: 0 0 8px rgba(168, 138, 50, 0.4); }
+}
+
+
 /* Game Interface */
 #game-container {
     justify-content: flex-start;

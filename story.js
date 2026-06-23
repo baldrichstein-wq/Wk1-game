@@ -292,8 +292,1421 @@ export const STORY = {
     },
 
     // ==========================================
-    // AUSBILDUNGSMISSIONEN (ALL FACTIONS) — PHASE 1: DRILL
+    // AUSBILDUNGSMISSIONEN (ALL FACTIONS)
+    // Klassensystem: Klasse wird durch die Ausbildungswahl vergeben
     // ==========================================
+
+    // ==========================================================
+    // DEUTSCHLAND WESTFRONT — 4 Klassenwege
+    // ==========================================================
+    de_west_training: {
+        title: "August 1914 – Grundausbildung im Elsass: Tag 1",
+        type: "decision",
+        description: "Um 04:30 Uhr reißt euch Feldwebel Brandts Pfiff aus dem Schlaf. 'Raus! Raus! Ihr seid Rekruten – noch keine Soldaten!' Auf dem Exerzierplatz stehen die Ausbilder der verschiedenen Waffengattungen bereit. Die Zuteilung entscheidet eure Laufbahn. Schaut genau hin, welcher Weg euch ruft – denn zurück gibt es nicht.",
+        options: [
+            {
+                text: "Zum Infanterie-Trupp: Marsch, Bajonett, Kampf Mann gegen Mann",
+                outcome: {
+                    text: "Hauptfeldwebel Kraus nimmt euch in die Infanterie-Gruppe. 'Infanteristen sind das Rückgrat der Armee. Ihr kämpft, ihr sterbt, ihr siegt – in dieser Reihenfolge.' Der erste Tag ist Erschöpfung pur.",
+                    damage: 3, moraleChange: +5, xpReward: 10,
+                    nextScenario: "de_west_training_infantry"
+                }
+            },
+            {
+                text: "Zum Sanitäts-Trupp: Wunden versorgen, Leben retten",
+                outcome: {
+                    text: "Sanitäts-Unteroffizier Wagner nickt euch zu. 'Im Krieg stirbt mehr an schlechter Wundversorgung als an Kugeln. Das ändert ihr.' Eure ersten Übungen: Druckverband, Tourniquet, Schienen.",
+                    damage: 0, moraleChange: +8, xpReward: 10,
+                    nextScenario: "de_west_training_medic"
+                }
+            },
+            {
+                text: "Zum Scharfschützen-Trupp: Präzision auf Distanz",
+                outcome: {
+                    text: "Scharfschützen-Ausbilder Lenz mustert euch kalt. 'Ein Scharfschütze tötet mit einem Schuss. Wer zwei braucht, ist kein Scharfschütze.' Ihr bekommt ein Mauser 98 und geht zum Schießstand.",
+                    damage: 0, moraleChange: +5, xpReward: 10,
+                    nextScenario: "de_west_training_sniper"
+                }
+            },
+            {
+                text: "Zum Pionier-Trupp: Gräben, Sprengmittel, Hindernisse",
+                outcome: {
+                    text: "Pionier-Feldwebel Steinbach zeigt auf Spaten und Sprengkisten. 'Pioniere bauen, was andere brauchen – und sprengen, was den Feind schützt.' Schaufeln und Zünder warten auf euch.",
+                    damage: 2, moraleChange: +5, xpReward: 10,
+                    nextScenario: "de_west_training_engineer"
+                }
+            }
+        ]
+    },
+
+    de_west_training_infantry: {
+        title: "August 1914 – Infanterieausbildung Westfront: Schießen & Drill",
+        type: "decision",
+        description: "Tag drei. Der Schießstand, Mauser 98 in der Hand, 200-Meter-Zielscheiben. Gleichzeitig: Bajonettübungen, Grabenbau unter Zeitdruck. Feldwebel Kraus treibt die Gruppe mit dem Stockeinsatz an: 'Ein Infanterist schießt, gräbt und kämpft – und das alles gleichzeitig!' Heute zeigt sich, wer aus diesem Holz geschnitzt ist.",
+        options: [
+            {
+                text: "Methodisch schießen – Korn, Visier, Atem, Abzug",
+                outcome: {
+                    text: "Acht von zehn Treffern auf 200 Meter. Kraus nickt: 'Akzeptabel. Morgen auf 300 Meter.' Der Körper lernt den Rhythmus des Gewehrs.",
+                    damage: 1, moraleChange: +12, xpReward: 18,
+                    nextScenario: "de_west_training_infantry_final"
+                }
+            },
+            {
+                text: "Schnellfeuer üben – maximale Schussrate in 60 Sekunden",
+                outcome: {
+                    text: "Fünfzehn Schuss, dreizehn Treffer – in sechzig Sekunden. Die Schulter brennt, die Finger sind taub. Kraus: 'Nicht schlecht. Feuerrate rettet Leben.'",
+                    damage: 3, moraleChange: +10, xpReward: 18,
+                    nextScenario: "de_west_training_infantry_final"
+                }
+            }
+        ]
+    },
+
+    de_west_training_infantry_final: {
+        title: "August 1914 – Infanterieausbildung Westfront: Abschlussübung",
+        type: "decision",
+        description: "Tag fünf. Kombinierte Gefechtsübung: Schützengraben ausheben, verteidigen, dann Gegenstoß mit Bajonett. Kraus steht oben auf dem Erdwall: 'Dies ist das Letzte, was ich euch beibringen kann. Was ihr heute lernt, entscheidet, ob ihr morgen lebt.' Echt scharfe Munition liegt auf dem Tisch – nicht für die Übung, aber als Erinnerung.",
+        options: [
+            {
+                text: "Den Graben unter Feuer halten und mit Bajonett kontern",
+                outcome: {
+                    text: "Ihr kämpft, fallt, steht auf, kämpft weiter. Als die Übung endet, steht Kraus vor euch: 'Infanterist. Das seid ihr jetzt.' Der Stempel auf den Papieren ist trocken, ehe die Tinte aufhört zu tropfen.",
+                    damage: 4, moraleChange: +20, xpReward: 30,
+                    grantClass: "infantry",
+                    nextScenario: "de_west_start"
+                }
+            }
+        ]
+    },
+
+    de_west_training_medic: {
+        title: "August 1914 – Sanitätsausbildung Westfront: Verwundetenversorgung",
+        type: "decision",
+        description: "Das Sanitätszelt riecht nach Karbol und Verwesung. Unteroffizier Wagner legt Verbände vor euch aus: 'Granatsplitter, Bauchschüsse, Gasvergiftung – jeder tötet anders. Ihr müsst jeden retten können.' Erste Übungen: Druckverband bei Arterienverletzung, Atemwegs-Management.",
+        options: [
+            {
+                text: "Verbandstechnik unter simuliertem Feuer üben",
+                outcome: {
+                    text: "Kniend im Schlamm, Kameraden schreien 'Verwundet!', Knallpatronen krachen. Ihr legt den Druckverband in neunzehn Sekunden an. Wagner: 'Fünf Sekunden zu lang. Morgen in zwölf.'",
+                    damage: 0, moraleChange: +15, xpReward: 18,
+                    nextScenario: "de_west_training_medic_final"
+                }
+            },
+            {
+                text: "Morphin-Dosierung und Triage-Entscheidungen lernen",
+                outcome: {
+                    text: "Rot – zu schwer. Gelb – sofort. Grün – warten. Ihr trefft Entscheidungen über Leben und Tod in Sekundenbruchteilen. Wagner beobachtet schweigend: 'Ihr habt das Richtige getan. Jeden einzelnen Mal.'",
+                    damage: 0, moraleChange: +18, xpReward: 18,
+                    nextScenario: "de_west_training_medic_final"
+                }
+            }
+        ]
+    },
+
+    de_west_training_medic_final: {
+        title: "August 1914 – Sanitätsausbildung Westfront: Lazarettprüfung",
+        type: "decision",
+        description: "Abschlussprüfung. Fünf 'Verwundete' gleichzeitig, verschiedene Verletzungen, drei Minuten. Wagner steht mit der Stoppuhr: 'Wer alle fünf richtig versorgt, bekommt das Kreuz. Wer es nicht schafft – lernt weiter.'",
+        options: [
+            {
+                text: "Systematisch alle fünf Verwundeten versorgen",
+                outcome: {
+                    text: "Zwei Minuten und vierundvierzig Sekunden. Alle fünf korrekt versorgt. Wagner steckt euch das Rote Kreuz auf die Jacke: 'Sanitäter. Ab heute rettet ihr Leben.'",
+                    damage: 0, moraleChange: +25, xpReward: 30,
+                    grantClass: "medic",
+                    nextScenario: "de_west_start"
+                }
+            }
+        ]
+    },
+
+    de_west_training_sniper: {
+        title: "August 1914 – Scharfschützenausbildung Westfront: Das Ziel",
+        type: "decision",
+        description: "Der Waldschießstand. Lenz führt euch zu einem Sitz auf einem Hochstand, drei Meter über dem Boden. Das Ziel: eine Scheibe auf 350 Metern, kaum sichtbar durch das Blattwerk. 'Ein Scharfschütze wartet. Manchmal Stunden. Dann ein Schuss.' Er legt das Zielfernrohr-Gewehr vor euch hin.",
+        options: [
+            {
+                text: "Warten, atmen, auf den perfekten Moment zielen",
+                outcome: {
+                    text: "Neunzehn Minuten wartet ihr. Dann – Windpause. Schuss. Treffer. Lenz sagt nichts. Er schreibt nur eine Zahl auf sein Notizbuch: 347 Meter.",
+                    damage: 0, moraleChange: +20, xpReward: 20,
+                    nextScenario: "de_west_training_sniper_final"
+                }
+            },
+            {
+                text: "Tarntechnik üben – im Wald unsichtbar werden",
+                outcome: {
+                    text: "Zweige, Erde, Gras – ihr arbeitet zwei Stunden an eurer Tarnung. Lenz sucht euch zwanzig Minuten, bevor er aufgibt. 'Gut. Wenn man euch nicht sieht, kann man euch nicht töten.'",
+                    damage: 0, moraleChange: +18, xpReward: 20,
+                    nextScenario: "de_west_training_sniper_final"
+                }
+            }
+        ]
+    },
+
+    de_west_training_sniper_final: {
+        title: "August 1914 – Scharfschützenausbildung Westfront: Der letzte Schuss",
+        type: "decision",
+        description: "Abschlusstest. Ein bewegliches Ziel, 400 Meter, Wind von rechts, Abenddämmerung. Lenz steht hinter euch: 'Ein Schuss. Kein zweiter. So ist der Krieg.'",
+        options: [
+            {
+                text: "Den einen Schuss abgeben – und treffen",
+                outcome: {
+                    text: "Die Scheibe wippt im Wind. Ihr reguliert, atmet aus zur Hälfte, drückt ab. Treffer. Lenz klappt sein Notizbuch zu: 'Scharfschütze. Schreib deinen Namen ins Schutzbuch.'",
+                    damage: 0, moraleChange: +28, xpReward: 32,
+                    grantClass: "sniper",
+                    nextScenario: "de_west_start"
+                }
+            }
+        ]
+    },
+
+    de_west_training_engineer: {
+        title: "August 1914 – Pionierausbildung Westfront: Gräben und Sprengmittel",
+        type: "decision",
+        description: "Tag drei. Vor euch liegt ein leeres Feld. Pionier-Feldwebel Steinbach: 'In sechs Stunden will ich einen kampfbereiten Schützengraben mit Unterstand, Schießscharte und Dränage sehen. Los.' Daneben auf dem Tisch: Zündschnüre, Sprengkapseln, Dynamit.",
+        options: [
+            {
+                text: "Den Schützengraben mit Unterstand und Dränagesystem bauen",
+                outcome: {
+                    text: "Fünf Stunden und zwanzig Minuten. Steinbach prüft jeden Winkel: 'Die Dränage ist falsch. Wasser läuft in den Unterstand.' Er pausiert. 'Sonst – tadellos.' Bei Steinbach ist das höchstes Lob.",
+                    damage: 4, moraleChange: +12, xpReward: 18,
+                    nextScenario: "de_west_training_engineer_final"
+                }
+            },
+            {
+                text: "Sprengmittel gegen ein simuliertes Hindernis einsetzen",
+                outcome: {
+                    text: "Zündschnur, Kapsel, Dynamit – die Zündkette in richtiger Reihenfolge. Die Explosion macht den Boden zittern. Steinbach: 'Richtig. Zu wenig Sprengmittel tötet euch selbst. Zu viel – auch. Ihr habt genau richtig dosiert.'",
+                    damage: 2, moraleChange: +15, xpReward: 18,
+                    nextScenario: "de_west_training_engineer_final"
+                }
+            }
+        ]
+    },
+
+    de_west_training_engineer_final: {
+        title: "August 1914 – Pionierausbildung Westfront: Abschluss",
+        type: "decision",
+        description: "Letzte Prüfung. Steinbach zeigt auf eine simulierte feindliche Sperre aus Stacheldraht und Panzerfallen. 'In dreißig Minuten brauche ich einen sauberen Durchgang. Ohne Geräusche. Ohne Verluste.' Er zieht seine Uhr.",
+        options: [
+            {
+                text: "Den Drahtdurchgang lautlos und präzise öffnen",
+                outcome: {
+                    text: "Drahtschneider, ruhige Hände, kein Klicken. Siebenundzwanzig Minuten. Steinbach geht durch den Durchgang ohne Zögern: 'Pionier. Ihr baut, was gebraucht wird – und sprengt, was nicht gebraucht wird.'",
+                    damage: 1, moraleChange: +22, xpReward: 30,
+                    grantClass: "engineer",
+                    nextScenario: "de_west_start"
+                }
+            }
+        ]
+    },
+
+    // ==========================================================
+    // DEUTSCHLAND OSTFRONT — 3 Klassenwege (inkl. Fernmelder)
+    // ==========================================================
+    de_ost_training: {
+        title: "August 1914 – Garnison Königsberg: Ausbildungswahl",
+        type: "decision",
+        description: "Die russischen Armeen marschieren schneller als erwartet. Hauptmann Kurz: 'Wir haben keine Zeit. Drei Tage, dann geht ihr an die Front.' Die Ausbilder der verschiedenen Waffengattungen stehen bereit. Ostfront-spezifisch: Maschinengewehre, Fernmeldewesen und medizinische Versorgung unter Winterbedingungen.",
+        options: [
+            {
+                text: "MG-Trupp: Das schwere MG 08 bedienen und Verteidigungsstellungen halten",
+                outcome: {
+                    text: "Das MG 08 wiegt 62 Kilogramm mit Lafette. Ihr lernt es in Teilen kennen, bevor ihr es zusammenbaut. Unteroffizier Riedel: 'Wer das MG beherrscht, beherrscht das Schlachtfeld.'",
+                    damage: 2, moraleChange: +8, xpReward: 10,
+                    nextScenario: "de_ost_training_infantry"
+                }
+            },
+            {
+                text: "Fernmelder-Trupp: Feldtelefon, Funkgerät und Kabelverlegung",
+                outcome: {
+                    text: "Feldwebel Meier zeigt euch das Feldtelefon Modell 1905. 'Ohne Kommunikation sind wir blind. Mit Kommunikation sind wir unbesiegbar.' Kabelrollen, Klemmzangen, Morseapparate.",
+                    damage: 0, moraleChange: +10, xpReward: 10,
+                    nextScenario: "de_ost_training_fernmelder"
+                }
+            },
+            {
+                text: "Sanitäts-Trupp: Verwundetenversorgung unter Winterbedingungen",
+                outcome: {
+                    text: "Unterarzt Hofmann: 'Im russischen Winter erfriert ein Verwundeter in Minuten. Ihr müsst schneller sein als die Kälte.' Eure ersten Übungen mit Handschuhen bei Minus zehn Grad.",
+                    damage: 0, moraleChange: +8, xpReward: 10,
+                    nextScenario: "de_ost_training_medic"
+                }
+            }
+        ]
+    },
+
+    de_ost_training_infantry: {
+        title: "August 1914 – MG-Ausbildung Ostfront",
+        type: "decision",
+        description: "Tag zwei. Das MG 08 liegt vor euch, zerlegt in dreiundzwanzig Teile. Riedel gibt euch drei Minuten. 'Wer es in drei Minuten zusammenbaut, bekommt Abendessen. Wer nicht – hungert und übt.'",
+        options: [
+            {
+                text: "Das MG 08 unter Zeitdruck montieren",
+                outcome: {
+                    text: "Zwei Minuten, achtundvierzig Sekunden. Riedel stellt euch ein Abendbrot hin, ohne ein Wort zu sagen. Das Schweigen ist Lob.",
+                    damage: 1, moraleChange: +15, xpReward: 20,
+                    nextScenario: "de_ost_training_infantry_final"
+                }
+            },
+            {
+                text: "Feuerwechsel-Koordination: Zwei MGs ohne Pausenlücke",
+                outcome: {
+                    text: "MG 1 feuert, MG 2 lädt. MG 2 übernimmt, MG 1 lädt. Kein Moment Stille für den Feind. Nach zehn Minuten sitzt der Rhythmus. Riedel nickt: 'Das bricht Angriffe.'",
+                    damage: 0, moraleChange: +18, xpReward: 20,
+                    nextScenario: "de_ost_training_infantry_final"
+                }
+            }
+        ]
+    },
+
+    de_ost_training_infantry_final: {
+        title: "August 1914 – MG-Abschluss Ostfront",
+        type: "decision",
+        description: "Tag drei. Simulierter russischer Massenangriff gegen eine MG-Stellung. Riedel: 'Die Russen kommen in Wellen. Wir lassen sie kommen – und wenn sie nah genug sind, ernten wir.'",
+        options: [
+            {
+                text: "Die MG-Stellung bis zum Ende halten",
+                outcome: {
+                    text: "Drei Angriffswellen abgewehrt. Das Übungsgelände ist still. Hauptmann Kurz tritt heran: 'Infanterist mit MG-Spezialisierung. Ihr habt den härtesten Posten an der Ostfront.'",
+                    damage: 4, moraleChange: +22, xpReward: 30,
+                    grantClass: "infantry",
+                    nextScenario: "de_ost_start"
+                }
+            }
+        ]
+    },
+
+    de_ost_training_fernmelder: {
+        title: "August 1914 – Fernmelderausbildung Ostfront",
+        type: "decision",
+        description: "Das Kabelkurs-Gelände: Ein simuliertes Schlachtfeld mit Granattrichtern und Stacheldraht. Meier: 'Das Kabel muss verlegt sein, auch wenn um euch herum alles explodiert.' Zwölf Kilo Kabelrolle auf der Schulter.",
+        options: [
+            {
+                text: "Kabel durch simuliertes Granatfeuer verlegen",
+                outcome: {
+                    text: "Explosionen, Staub, Schlamm – ihr zieht das Kabel durch, klemmt an, testet. Verbindung steht. Meier am Hörer: 'Verbindung klar.' Drei Worte, die alles bedeuten.",
+                    damage: 2, moraleChange: +15, xpReward: 20,
+                    nextScenario: "de_ost_training_fernmelder_final"
+                }
+            },
+            {
+                text: "Morsecode und Funksignal in Echtzeit übertragen",
+                outcome: {
+                    text: "Punkt-Strich-Punkt. Ihr übertragt eine verschlüsselte Lagemeldung in vierzig Sekunden. Meier entschlüsselt: 'Korrekt. Ein Fernmelder, der morst, ist doppelt so wertvoll wie einer, der nicht morst.'",
+                    damage: 0, moraleChange: +18, xpReward: 20,
+                    nextScenario: "de_ost_training_fernmelder_final"
+                }
+            }
+        ]
+    },
+
+    de_ost_training_fernmelder_final: {
+        title: "August 1914 – Fernmelder-Abschluss Ostfront",
+        type: "decision",
+        description: "Abschlussprüfung: Kabelbruch unter Beschuss reparieren, Lagemeldungen in Echtzeit weiterleiten, Artilleriekoordinaten übermitteln – alles gleichzeitig. Meier: 'Beim nächsten Mal sind es echte Granaten.'",
+        options: [
+            {
+                text: "Alle Kommunikationsaufgaben unter Druck lösen",
+                outcome: {
+                    text: "Dreimal Kabelbruch, dreimal geflickt. Vier Lagemeldungen, alle korrekt. Artillerie trifft das Ziel. Hauptmann Kurz: 'Fernmelder. Ihr seid die Augen des Regiments.'",
+                    damage: 2, moraleChange: +22, xpReward: 30,
+                    grantClass: "fernmelder",
+                    nextScenario: "de_ost_start"
+                }
+            }
+        ]
+    },
+
+    de_ost_training_medic: {
+        title: "August 1914 – Sanitätsausbildung Ostfront",
+        type: "decision",
+        description: "Unterarzt Hofmann legt ein erforenes Modellglied auf den Tisch: 'Erfrierungsgrad drei. Was macht ihr?' Der Unterricht beginnt sofort, ohne Einführung, ohne Gnade.",
+        options: [
+            {
+                text: "Erfrierungsbehandlung und Wundversorgung bei Minusgraden",
+                outcome: {
+                    text: "Handschuhe aus, Wunde versorgen, Handschuhe wieder an. Klingt einfach. Bei minus zwölf Grad ist es ein Kampf. Hofmann: 'Ihr habt es getan, ohne die Wunde zu verschlimmern. Gut.'",
+                    damage: 0, moraleChange: +15, xpReward: 18,
+                    nextScenario: "de_ost_training_medic_final"
+                }
+            },
+            {
+                text: "Verwundete unter Angriff aus dem Feuer ziehen",
+                outcome: {
+                    text: "Kriechend, Verwundeten am Arm, Schüsse über dem Kopf – ihr zieht ihn raus. Hofmann: 'Schnell genug. Sauber genug. Lebend.'",
+                    damage: 2, moraleChange: +18, xpReward: 18,
+                    nextScenario: "de_ost_training_medic_final"
+                }
+            }
+        ]
+    },
+
+    de_ost_training_medic_final: {
+        title: "August 1914 – Sanitäts-Abschluss Ostfront",
+        type: "decision",
+        description: "Letzte Nacht vor dem Abmarsch. Hofmann: 'Morgen geht ihr an die Front. Heute Nacht macht ihr noch einen letzten Einsatz.' Eine simulierte Massenverwundetenlage mit sieben Patienten.",
+        options: [
+            {
+                text: "Alle sieben Patienten versorgen und priorisieren",
+                outcome: {
+                    text: "Sechs von sieben – der siebte simuliert einen nicht rettbaren Bauchschuss. Hofmann: 'Ihr habt richtig priorisiert. Sechs Überlebende ist der Unterschied zwischen einem guten und einem toten Sanitäter.' Rotes Kreuz auf die Jacke.",
+                    damage: 0, moraleChange: +25, xpReward: 30,
+                    grantClass: "medic",
+                    nextScenario: "de_ost_start"
+                }
+            }
+        ]
+    },
+
+    // ==========================================================
+    // FRANKREICH — 4 Klassenwege
+    // ==========================================================
+    fr_training: {
+        title: "August 1914 – Feldlager Châlons: Wahl des Ausbildungsweges",
+        type: "decision",
+        description: "Sergent-chef Moreau stellt die Rekruten vor die Ausbilder der verschiedenen Truppengattungen. 'Frankreich braucht jeden Mann an der richtigen Stelle. Was steckt in euch – Kämpfer, Retter, Jäger oder Ingenieur?' Die Champagne riecht nach Sommer und kommendem Blut.",
+        options: [
+            {
+                text: "Infanterie: Bajonettangriff, Élan vital, Feuerüberlegenheit",
+                outcome: {
+                    text: "Caporal Lefèvre nimmt euch in die Infanteriegruppe. 'Frankreich greift an. Immer. Ihr lernt, wie man einen Angriff führt ohne zu sterben – meistens.'",
+                    damage: 2, moraleChange: +12, xpReward: 10,
+                    nextScenario: "fr_training_infantry"
+                }
+            },
+            {
+                text: "Médecin: Feldchirurgie, Triage, Verwundetenrettung",
+                outcome: {
+                    text: "Médecin-auxiliaire Renard zeigt auf das Verbandszelt. 'Ein Médecin kann keine Wunder wirken – aber er kann Zeit gewinnen. Zeit ist das Einzige, was Soldaten retten kann.'",
+                    damage: 0, moraleChange: +10, xpReward: 10,
+                    nextScenario: "fr_training_medic"
+                }
+            },
+            {
+                text: "Tireur d'élite: Scharfschützenausbildung, Lebel-Gewehr",
+                outcome: {
+                    text: "Sergent Beaumont, selbst dreifacher Schießmeister, nimmt euch zur Seite. 'Das Lebel ist alt aber tödlich. Ihr lernt, jeden Schuss zu einem Kunstwerk zu machen.'",
+                    damage: 0, moraleChange: +8, xpReward: 10,
+                    nextScenario: "fr_training_sniper"
+                }
+            },
+            {
+                text: "Génie: Festungsbau, Minensperren, Hindernisse",
+                outcome: {
+                    text: "Caporal Dubois rollt Blaupausen aus. 'Das Génie baut Frankreichs Verteidigung. Jede Linie, jede Sperre, jeder Unterstand – ihr macht sie möglich.'",
+                    damage: 1, moraleChange: +8, xpReward: 10,
+                    nextScenario: "fr_training_engineer"
+                }
+            }
+        ]
+    },
+
+    fr_training_infantry: {
+        title: "August 1914 – Infanterieausbildung Châlons: Lebel & Bajonett",
+        type: "decision",
+        description: "Das Lebel-Röhrenmagazin lädt langsam nach – man muss zwischen den Schüssen laden. Lefèvre: 'Der Deutsche schießt schnell und ungenau. Der Franzose schießt langsam und tödlich. Dann greift er mit dem Bajonett an.' Schießübung und Angriffstraining wechseln sich stündlich ab.",
+        options: [
+            {
+                text: "Lebel-Schnellschuss mit Nachladen zwischen den Schüssen",
+                outcome: {
+                    text: "Acht Schuss, acht Nachladen – ein Rhythmus wie ein langsamer Herzschlag. Vier von acht Treffern auf bewegliche Ziele. Lefèvre: 'Morgen sind es fünf.'",
+                    damage: 1, moraleChange: +12, xpReward: 18,
+                    nextScenario: "fr_training_infantry_final"
+                }
+            },
+            {
+                text: "Bajonettangriff mit Kampfschrei auf 100 Meter",
+                outcome: {
+                    text: "'En avant!' Das Blut rauscht, die Beine fliegen, das Bajonett trifft die Puppe. Lefèvre: 'Der Élan vital. Das ist, was den Boche erschreckt. Das ist Frankreich.'",
+                    damage: 3, moraleChange: +18, xpReward: 18,
+                    nextScenario: "fr_training_infantry_final"
+                }
+            }
+        ]
+    },
+
+    fr_training_infantry_final: {
+        title: "August 1914 – Infanterie-Abschluss: Grande Manoeuvre",
+        type: "decision",
+        description: "Das Regiment simuliert einen Angriff. Rauchgranaten, Artillerielärm, hundert Mann in Bewegung. Moreau: 'Heute zeigt ihr, was ihr gelernt habt. Morgen braucht Frankreich es.'",
+        options: [
+            {
+                text: "In erster Linie angreifen und die Stellung nehmen",
+                outcome: {
+                    text: "Rauch, Lärm, Schreien – ihr seid vorne, immer vorne. Als es endet, nickt Moreau: 'Infanterist. Pour la France.'",
+                    damage: 4, moraleChange: +25, xpReward: 30,
+                    grantClass: "infantry",
+                    nextScenario: "fr_start"
+                }
+            }
+        ]
+    },
+
+    fr_training_medic: {
+        title: "August 1914 – Médecin-Ausbildung Châlons",
+        type: "decision",
+        description: "Renard zeigt euch die Statistiken: 'Dreißig Prozent der Verwundeten sterben nicht an der Wunde, sondern an schlechter Erstversorgung. Ihr ändert das.' Tourniquet, Wundspülung, Schienen – alles in fünf Minuten.",
+        options: [
+            {
+                text: "Erste-Hilfe-Kurs unter Kampfbedingungen absolvieren",
+                outcome: {
+                    text: "Knallpatronen, Schreien, Schlamm. Ihr legt den Verband an. Renard stoppt die Uhr: 'Trois minutes, douze secondes. Acceptable.' In Renards Welt ist 'acceptable' ein Kompliment.",
+                    damage: 0, moraleChange: +15, xpReward: 18,
+                    nextScenario: "fr_training_medic_final"
+                }
+            },
+            {
+                text: "Triage unter Massenanfall üben – Prioritäten setzen",
+                outcome: {
+                    text: "Zehn Simulationsopfer, jeder anders verletzt. Ihr sortiert in neunzig Sekunden. Renard: 'Sechs richtig priorisiert. Vier falsch – die wären gestorben. Morgen macht ihr zehn von zehn.'",
+                    damage: 0, moraleChange: +12, xpReward: 18,
+                    nextScenario: "fr_training_medic_final"
+                }
+            }
+        ]
+    },
+
+    fr_training_medic_final: {
+        title: "August 1914 – Médecin-Abschluss Châlons",
+        type: "decision",
+        description: "Abschlussprüfung unter Moreau selbst. Drei Verwundete gleichzeitig, Feuer im Hintergrund, Zeitlimit zwei Minuten. 'Un bon médecin ne panique pas.'",
+        options: [
+            {
+                text: "Alle drei Verwundeten retten ohne zu zögern",
+                outcome: {
+                    text: "Ein Minute, neunundvierzig Sekunden. Alle drei versorgt. Renard steckt euch das Rote Kreuz auf die Schulter: 'Médecin. Frankreich braucht euch mehr als Gewehre.'",
+                    damage: 0, moraleChange: +28, xpReward: 30,
+                    grantClass: "medic",
+                    nextScenario: "fr_start"
+                }
+            }
+        ]
+    },
+
+    fr_training_sniper: {
+        title: "August 1914 – Scharfschützenausbildung Châlons",
+        type: "decision",
+        description: "Das alte Lebel als Scharfschützengewehr – unbequem, schwer, aber tödlich präzise in den richtigen Händen. Beaumont legt das Gewehr auf eine Sandsack-Auflage. 'Das Gewehr ist älter als ihr. Es hat trotzdem mehr Treffer als jeder von euch.'",
+        options: [
+            {
+                text: "Präzisionsschießen auf 300 Meter mit dem Lebel",
+                outcome: {
+                    text: "Drei Schüsse auf dreihundert Meter, alle drei Treffer. Beaumont pfeift leise: 'C'est rare. Das ist selten.' Er legt einen Streifen um euren Arm.",
+                    damage: 0, moraleChange: +18, xpReward: 20,
+                    nextScenario: "fr_training_sniper_final"
+                }
+            },
+            {
+                text: "Tarntechnik im Gestrüpp der Champagne üben",
+                outcome: {
+                    text: "In der Weinberglandschaft seid ihr unsichtbar. Beaumont sucht euch zwanzig Minuten – dann gebt ihr euch zu erkennen. 'Wenn man euch nicht sieht, habt ihr schon gewonnen.'",
+                    damage: 0, moraleChange: +15, xpReward: 20,
+                    nextScenario: "fr_training_sniper_final"
+                }
+            }
+        ]
+    },
+
+    fr_training_sniper_final: {
+        title: "August 1914 – Scharfschützen-Abschluss",
+        type: "decision",
+        description: "Abschlusstest: Bewegliches Ziel, 350 Meter, Gegenwind, ein Schuss. Beaumont: 'En France, le tireur d'élite ne rate pas.'",
+        options: [
+            {
+                text: "Den einen Schuss abgeben – mit vollem Vertrauen in die Waffe",
+                outcome: {
+                    text: "Wind, Ziel, Abzug. Treffer. Beaumont schreibt euren Namen in sein Heft. 'Tireur d'élite. Der Feind wird euch nie sehen.'",
+                    damage: 0, moraleChange: +25, xpReward: 30,
+                    grantClass: "sniper",
+                    nextScenario: "fr_start"
+                }
+            }
+        ]
+    },
+
+    fr_training_engineer: {
+        title: "August 1914 – Génie-Ausbildung Châlons",
+        type: "decision",
+        description: "Dubois zeigt auf eine Karte: Schützengräben, Hindernisse, Unterstände. 'Das Génie entscheidet, ob Infanterie überlebt oder stirbt. Ihr baut das Fundament des Krieges.'",
+        options: [
+            {
+                text: "Schützengraben mit Unterstand und Stacheldrahtsperre bauen",
+                outcome: {
+                    text: "Spaten, Sandsäcke, Stacheldrahtrollen. Nach sechs Stunden steht eine echte Verteidigungsposition. Dubois: 'Solide. Nicht schön – solide. Schön ist nicht wichtig. Leben ist wichtig.'",
+                    damage: 3, moraleChange: +12, xpReward: 18,
+                    nextScenario: "fr_training_engineer_final"
+                }
+            },
+            {
+                text: "Minensperren und Sprengladungen verlegen",
+                outcome: {
+                    text: "Zündschnur, Sprengkapsel, Deckung. Die Explosion ist präzise, kontrolliert, tödlich. Dubois nickt: 'Das Génie ist die gefährlichste Truppengattung. Auch für sich selbst.'",
+                    damage: 2, moraleChange: +15, xpReward: 18,
+                    nextScenario: "fr_training_engineer_final"
+                }
+            }
+        ]
+    },
+
+    fr_training_engineer_final: {
+        title: "August 1914 – Génie-Abschluss",
+        type: "decision",
+        description: "Abschlussprüfung: Eine simulierte Stacheldrahtsperre in Dunkelheit und Stille öffnen. Dann Sprengladung unter einem Hindernis anbringen, Zünder setzen, zurück. Dreißig Minuten.",
+        options: [
+            {
+                text: "Alles korrekt und lautlos ausführen",
+                outcome: {
+                    text: "Lautlos, präzise, effektiv. Dubois: 'Pionier. Der Krieg braucht euch mehr als er es ahnt.'",
+                    damage: 1, moraleChange: +22, xpReward: 30,
+                    grantClass: "engineer",
+                    nextScenario: "fr_start"
+                }
+            }
+        ]
+    },
+
+    // ==========================================================
+    // GROSSBRITANNIEN — 3 Klassenwege (inkl. Fernmelder)
+    // ==========================================================
+    gb_training: {
+        title: "August 1914 – Aldershot: Ausbildungswahl",
+        type: "decision",
+        description: "Sergeant Major Hicks steht vor der angetretenen Kompanie. 'You are civilians. In five days, you will be soldiers. The British Army has three paths for you: the rifle, the signal, or the stretcher. Choose wisely – because the wrong choice gets people killed.'",
+        options: [
+            {
+                text: "Rifleman: Lee-Enfield, Mad Minute, Rapid Fire",
+                outcome: {
+                    text: "Corporal Evans legt das Lee-Enfield auf den Tisch. 'Fifteen aimed rounds per minute. That is the British standard. Some men do twenty. You will do fifteen first.'",
+                    damage: 2, moraleChange: +10, xpReward: 10,
+                    nextScenario: "gb_training_infantry"
+                }
+            },
+            {
+                text: "Signals: Semaphore, Field Telegraph, Artillery Coordination",
+                outcome: {
+                    text: "Corporal Fletcher zeigt auf Flaggen, Kabel und Funkgeräte. 'Communications win wars. The man at the wire is as important as the man with the rifle. Sometimes more.'",
+                    damage: 0, moraleChange: +10, xpReward: 10,
+                    nextScenario: "gb_training_fernmelder"
+                }
+            },
+            {
+                text: "RAMC: Royal Army Medical Corps, Stretcher Bearers",
+                outcome: {
+                    text: "Corporal Harris, RAMC-Veteran der Buren-Kampagne: 'We save the men who fight. Without us, there is no army. Without us, there is only defeat.'",
+                    damage: 0, moraleChange: +10, xpReward: 10,
+                    nextScenario: "gb_training_medic"
+                }
+            }
+        ]
+    },
+
+    gb_training_infantry: {
+        title: "August 1914 – Rifleman-Ausbildung Aldershot: The Mad Minute",
+        type: "decision",
+        description: "Der Schießstand. Evans: 'Fifteen aimed rounds in sixty seconds. That is the Mad Minute. It is what makes the British infantry the most feared in the world. Now you learn it.'",
+        options: [
+            {
+                text: "The Mad Minute absolvieren – 15 präzise Schüsse in 60 Sekunden",
+                outcome: {
+                    text: "Vierzehn Treffer in siebenundfünfzig Sekunden. Evans: 'Fourteen. Close enough. Tomorrow: fifteen. The next day: sixteen.'",
+                    damage: 2, moraleChange: +15, xpReward: 20,
+                    nextScenario: "gb_training_infantry_final"
+                }
+            },
+            {
+                text: "Schnellschuss-Training unter Erschöpfungsbedingungen",
+                outcome: {
+                    text: "Fünfhundert Meter Sprint, sofort schießen. Herzschlag wie Trommelfeuer, Hände zittern – trotzdem Treffer. Evans: 'A soldier who can shoot while exhausted is a soldier who survives.'",
+                    damage: 4, moraleChange: +12, xpReward: 20,
+                    nextScenario: "gb_training_infantry_final"
+                }
+            }
+        ]
+    },
+
+    gb_training_infantry_final: {
+        title: "August 1914 – Rifleman-Abschluss: Final Exercise",
+        type: "decision",
+        description: "Hicks: 'You have five days of training. The Germans have five years. You have one advantage: You are British. Do not waste it.' Nachtpatrouille, Feuerkoordination, kombinierte Abschlussübung.",
+        options: [
+            {
+                text: "Nachtpatrouille lautlos durch feindliches Gelände führen",
+                outcome: {
+                    text: "Dunkelheit, kein Licht, kein Geräusch. Ihr erreicht das Ziel zwei Stunden früher als erwartet. Hicks: 'I expected you at dawn. You arrived at midnight. Well done, Rifleman.'",
+                    damage: 2, moraleChange: +25, xpReward: 30,
+                    grantClass: "infantry",
+                    nextScenario: "gb_start"
+                }
+            }
+        ]
+    },
+
+    gb_training_fernmelder: {
+        title: "August 1914 – Signals-Ausbildung Aldershot",
+        type: "decision",
+        description: "Fletcher: 'Semaphore, Morse, field telephone – you will learn all three. Because in battle, one system always fails. You need the backup.' Flaggen, Kabel, Funkgerät auf dem Tisch.",
+        options: [
+            {
+                text: "Semaphore-Flaggencode in Rekordzeit beherrschen",
+                outcome: {
+                    text: "Ihr entschlüsselt eine verschlüsselte Nachricht in sechzig Sekunden. Fletcher: 'Communications win wars. Remember that.'",
+                    damage: 0, moraleChange: +18, xpReward: 20,
+                    nextScenario: "gb_training_fernmelder_final"
+                }
+            },
+            {
+                text: "Feldtelefon-Kabel durch simuliertes Schlachtfeld verlegen",
+                outcome: {
+                    text: "Stacheldraht, Granattrichter, Schlamm – das Kabel folgt eurem Weg durch alles. Fletcher testet den Anschluss: 'Line clear.' Zwei Worte, die über Sieg oder Niederlage entscheiden.",
+                    damage: 2, moraleChange: +15, xpReward: 20,
+                    nextScenario: "gb_training_fernmelder_final"
+                }
+            }
+        ]
+    },
+
+    gb_training_fernmelder_final: {
+        title: "August 1914 – Signals-Abschluss Aldershot",
+        type: "decision",
+        description: "Abschlussprüfung: Kabelbruch unter Beschuss reparieren, Artilleriekoordinaten übermitteln, Nachricht in Morsecode senden. Gleichzeitig. Hicks beobachtet.",
+        options: [
+            {
+                text: "Alle Kommunikationsaufgaben simultan lösen",
+                outcome: {
+                    text: "Artillerie trifft das Ziel. Kabel ist geflickt. Nachricht ist übermittelt. Hicks schreibt in sein Buch: 'Signaller. The regiment has eyes.'",
+                    damage: 1, moraleChange: +22, xpReward: 30,
+                    grantClass: "fernmelder",
+                    nextScenario: "gb_start"
+                }
+            }
+        ]
+    },
+
+    gb_training_medic: {
+        title: "August 1914 – RAMC-Ausbildung Aldershot",
+        type: "decision",
+        description: "Harris: 'A stretcher bearer runs toward the bullets, not away from them. You will learn to carry a wounded man while being shot at. And you will not drop him.' Erster Tag: Gewicht des Verwundeten – achtzig Kilo Lebendgewicht.",
+        options: [
+            {
+                text: "Verwundeten unter Feuer bergend durch Hindernisse ziehen",
+                outcome: {
+                    text: "Stacheldraht, Granattrichter, Schlamm – und ein bewusstloser Kamerad auf den Schultern. Ihr bringt ihn raus. Harris: 'Six minutes. Next time: four.'",
+                    damage: 3, moraleChange: +15, xpReward: 18,
+                    nextScenario: "gb_training_medic_final"
+                }
+            },
+            {
+                text: "Feldverband bei verschiedenen Wundtypen anlegen",
+                outcome: {
+                    text: "Granatsplitter, Schusswunde, Druckverband, Schiene – alles in Minutentakt. Harris: 'Correct. Every time. That is all I ask.'",
+                    damage: 0, moraleChange: +18, xpReward: 18,
+                    nextScenario: "gb_training_medic_final"
+                }
+            }
+        ]
+    },
+
+    gb_training_medic_final: {
+        title: "August 1914 – RAMC-Abschluss Aldershot",
+        type: "decision",
+        description: "Harris: 'Last exercise. Four casualties. Shell fire. Two minutes. Go.' Der Startschuss fällt.",
+        options: [
+            {
+                text: "Alle vier Verwundeten in zwei Minuten versorgen",
+                outcome: {
+                    text: "Ein Minute, siebenundfünfzig Sekunden. Alle vier. Harris sieht auf die Uhr, sieht zu euch: 'RAMC. You run toward the bullets. Remember that.'",
+                    damage: 0, moraleChange: +25, xpReward: 30,
+                    grantClass: "medic",
+                    nextScenario: "gb_start"
+                }
+            }
+        ]
+    },
+
+    // ==========================================================
+    // BELGIEN — 3 Klassenwege
+    // ==========================================================
+    be_training: {
+        title: "August 1914 – Fort Loncin: Ausbildung unter Beschuss",
+        type: "decision",
+        description: "Die Kanonen von Lüttich donnern in der Ferne. Van den Berg: 'Ihr habt keine Zeit für eine normale Ausbildung. Die Deutschen kommen. Ihr wählt heute euren Posten – und morgen kämpft ihr dafür.' Die Mauern des Forts zittern bei jedem Einschlag.",
+        options: [
+            {
+                text: "Schütze: Gewehr, Festungsverteidigung, Engpasskampf",
+                outcome: {
+                    text: "Adjutant Van den Berg übergibt euch das belgische Mauser 1889. 'Dasselbe Gewehr wie die Deutschen. Aber wir schießen besser – weil wir für unser Heimatland kämpfen.'",
+                    damage: 2, moraleChange: +15, xpReward: 10,
+                    nextScenario: "be_training_infantry"
+                }
+            },
+            {
+                text: "Pionier: Festungsvertärkung, Minensperren, Hindernisse",
+                outcome: {
+                    text: "Leutnant Claes: 'Das Fort muss halten. Ihr sorgt dafür.' Stacheldraht, Betonsäcke, Sprengladungen – der erste Tag ist Muskelarbeit ohne Ende.",
+                    damage: 3, moraleChange: +10, xpReward: 10,
+                    nextScenario: "be_training_engineer"
+                }
+            },
+            {
+                text: "Médecin: Verwundetenversorgung unter Artilleriebeschuss",
+                outcome: {
+                    text: "Infirmier Martens: 'Im Fort treffen uns Granaten von allen Seiten. Ihr versorgt die Verwundeten, während der Beton über euch bricht.' Eine Einführung ohne Zartgefühl.",
+                    damage: 0, moraleChange: +8, xpReward: 10,
+                    nextScenario: "be_training_medic"
+                }
+            }
+        ]
+    },
+
+    be_training_infantry: {
+        title: "August 1914 – Schützenausbildung Fort Loncin",
+        type: "decision",
+        description: "Der Schießstand liegt im Innenhof des Forts. Draußen hört man die deutschen Kanonen. Van den Berg: 'Ihr schießt auf Deutsche. Jeder Treffer rettet belgisches Land.'",
+        options: [
+            {
+                text: "Zielschießen auf verschiedene Entfernungen im Festungsinneren",
+                outcome: {
+                    text: "Enge Korridore, kurze Entfernungen – der Festungskampf ist anders als Feldkampf. Ihr lernt, um Ecken zu schießen, in engen Räumen zu kämpfen. Van den Berg: 'Gut. Sehr gut.'",
+                    damage: 1, moraleChange: +15, xpReward: 20,
+                    nextScenario: "be_training_infantry_final"
+                }
+            },
+            {
+                text: "Verteidigungslinie unter simuliertem Artilleriefeuer halten",
+                outcome: {
+                    text: "Granatenknall, Betonstaub, Schreien. Ihr haltet die Linie. Van den Berg: 'Belgien ist klein. Aber belgische Soldaten sind groß.'",
+                    damage: 4, moraleChange: +18, xpReward: 20,
+                    nextScenario: "be_training_infantry_final"
+                }
+            }
+        ]
+    },
+
+    be_training_infantry_final: {
+        title: "August 1914 – Schützen-Abschluss: Letzter Tag",
+        type: "decision",
+        description: "In der Nacht haben echte Granaten den Westwall getroffen. Risse im Beton. Van den Berg: 'Das Training ist vorbei. Nicht weil wir fertig sind – weil der Feind es beendet hat.'",
+        options: [
+            {
+                text: "Schützenlinie zur Verteidigung des Haupttors formieren",
+                outcome: {
+                    text: "Schulter an Schulter. Keiner weicht. Van den Berg geht die Linie ab, sieht in jedes Gesicht: 'Voor België!' – und es reicht. Fuselier. Soldat der belgischen Armee.",
+                    damage: 3, moraleChange: +25, xpReward: 30,
+                    grantClass: "infantry",
+                    nextScenario: "be_start"
+                }
+            }
+        ]
+    },
+
+    be_training_engineer: {
+        title: "August 1914 – Pionierausbildung Fort Loncin",
+        type: "decision",
+        description: "Claes zeigt auf den Beton: 'Das Fort ist stark. Aber noch stärker mit Stacheldraht, Panzerfallen und Sprengladungen. Ihr macht es uneinnehmbar.'",
+        options: [
+            {
+                text: "Stacheldrahtsperren und Panzerfallen in Rekordzeit errichten",
+                outcome: {
+                    text: "Ihr rollt, rammt, befestigt. Van den Berg kontrolliert: 'Een goede hindernis redt levens.' Ein gutes Hindernis rettet Leben. Eures wurde als Standard erklärt.",
+                    damage: 2, moraleChange: +15, xpReward: 20,
+                    nextScenario: "be_training_engineer_final"
+                }
+            },
+            {
+                text: "Sprengladungen am Festungstor für den Notfall anlegen",
+                outcome: {
+                    text: "Wenn das Fort fällt, fällt es nicht kampflos. Claes: 'Als de Duitsers dit fort willen – laat hen ervoor betalen.' Wenn sie es wollen, sollen sie dafür bezahlen.",
+                    damage: 1, moraleChange: +18, xpReward: 20,
+                    nextScenario: "be_training_engineer_final"
+                }
+            }
+        ]
+    },
+
+    be_training_engineer_final: {
+        title: "August 1914 – Pionier-Abschluss Fort Loncin",
+        type: "decision",
+        description: "Letzte Prüfung: Einen beschädigten Abschnitt der Fortmauer provisorisch verstärken, gleichzeitig Minensperren vor dem Tor aktivieren. Dreißig Minuten. Die Deutschen kommen.",
+        options: [
+            {
+                text: "Mauer verstärken und Minen aktivieren – alles in einer halben Stunde",
+                outcome: {
+                    text: "Achtundzwanzig Minuten. Claes drückt euch die Hand: 'Pionier. Belgien ist so stark wie seine Pioniere.'",
+                    damage: 2, moraleChange: +22, xpReward: 30,
+                    grantClass: "engineer",
+                    nextScenario: "be_start"
+                }
+            }
+        ]
+    },
+
+    be_training_medic: {
+        title: "August 1914 – Médecin-Ausbildung Fort Loncin",
+        type: "decision",
+        description: "Martens: 'Granaten töten auf verschiedene Arten. Ihr lernt, mit jeder umzugehen.' Splitter, Druckwellen, Verschüttungen – das Spektrum der Verletzungen ist endlos.",
+        options: [
+            {
+                text: "Splitterwunden unter Zeitdruck versorgen",
+                outcome: {
+                    text: "Pinzette, Verband, Druckpunkt. Schnell, aber sorgfältig. Martens: 'Precies. Niet te snel, niet te langzaam.' Nicht zu schnell, nicht zu langsam.",
+                    damage: 0, moraleChange: +15, xpReward: 18,
+                    nextScenario: "be_training_medic_final"
+                }
+            },
+            {
+                text: "Verschütteten aus Betontrümmern befreien und versorgen",
+                outcome: {
+                    text: "Betonbrocken beiseite, Atemweg freihalten, stabil lagern. Der Simulationspatient atmet wieder. Martens: 'Dat is het verschil. Das ist der Unterschied.'",
+                    damage: 1, moraleChange: +18, xpReward: 18,
+                    nextScenario: "be_training_medic_final"
+                }
+            }
+        ]
+    },
+
+    be_training_medic_final: {
+        title: "August 1914 – Médecin-Abschluss Fort Loncin",
+        type: "decision",
+        description: "Abschlussprüfung. Vier Verwundete, echte Granateneinschläge im Hintergrund. Martens: 'Jetzt. Ohne Pause.'",
+        options: [
+            {
+                text: "Alle vier Verwundeten unter echtem Granatenlärm versorgen",
+                outcome: {
+                    text: "Die Hände zittern, aber die Verbände sitzen. Alle vier versorgt. Martens: 'Sanitäter. Voor België en voor het leven.' Für Belgien und für das Leben.",
+                    damage: 0, moraleChange: +25, xpReward: 30,
+                    grantClass: "medic",
+                    nextScenario: "be_start"
+                }
+            }
+        ]
+    },
+
+    // ==========================================================
+    // ÖSTERREICH-UNGARN — 4 Klassenwege (inkl. Standschütze)
+    // ==========================================================
+    at_training: {
+        title: "August 1914 – Karpaten-Ausbildungslager: Ausbildungswahl",
+        type: "decision",
+        description: "Leutnant Brandtner, k.u.k. Alpenjäger, steht auf einem Felsvorsprung. 'Das Kaiserreich braucht jeden Mann an der richtigen Stelle. Infanterie, Sanitäter, Pionier oder – wenn ihr Tiroler seid – Standschütze.' Hinter ihm: die endlose Karpatenkette.",
+        options: [
+            {
+                text: "Infanterie: Gebirgsinfanterie, Kampf im Hochgelände",
+                outcome: {
+                    text: "Hauptmann Mayer nimmt euch in die Gebirgsinfanterie. 'Im Gebirge kämpft man anders als in der Ebene. Steile Hänge, dünne Luft, kein Rückzug.' Gewehr und Steigeisen.",
+                    damage: 3, moraleChange: +8, xpReward: 10,
+                    nextScenario: "at_training_infantry"
+                }
+            },
+            {
+                text: "Sanitäter: Verwundetenversorgung im Hochgebirge",
+                outcome: {
+                    text: "Militärarzt Dr. Fink: 'Im Gebirge ist die Evakuierung eines Verwundeten das Schwierigste überhaupt. Ihr lernt es heute.' Seile, Tragen, Kältebehandlung.",
+                    damage: 0, moraleChange: +8, xpReward: 10,
+                    nextScenario: "at_training_medic"
+                }
+            },
+            {
+                text: "Pionier: Kaverne und Stellungsbau in Felshängen",
+                outcome: {
+                    text: "Oberleutnant Huber: 'Im Gebirge ist der Pionier König. Ihr sprengt, baut, sperrt – und das alles an Steilhängen.' Sprengstoff und Felshammer.",
+                    damage: 2, moraleChange: +8, xpReward: 10,
+                    nextScenario: "at_training_engineer"
+                }
+            },
+            {
+                text: "Standschütze: Tiroler Heimatschütze, Gebirgsschütze, Scharfschütze",
+                outcome: {
+                    text: "Brandtner nickt respektvoll: 'Ein Tiroler kennt sein Gebirge. Ein Standschütze kämpft für seine Heimat wie kein anderer.' Ihr bekommt das schwarze Edelweiß.",
+                    damage: 0, moraleChange: +12, xpReward: 10,
+                    nextScenario: "at_training_standschuetze"
+                }
+            }
+        ]
+    },
+
+    at_training_infantry: {
+        title: "August 1914 – Gebirgsinfanterie-Ausbildung Karpaten",
+        type: "decision",
+        description: "Tag zwei. Aufstieg mit voller Ausrüstung auf 1.800 Meter. Mayer: 'Wer hier oben kämpft, kämpft auch gegen das Gebirge. Wer das Gebirge nicht respektiert, stirbt daran.' Drei Männer kehren um. Ihr nicht.",
+        options: [
+            {
+                text: "Gebirgsmarsch mit Gepäck bis zum Gipfel durchhalten",
+                outcome: {
+                    text: "Die Lungen brennen, die Knie zittern. Oben: Kälte und Weite. Mayer steht bereits dort. 'Ihr seid angekommen. Die anderen nicht. Das ist der Unterschied.'",
+                    damage: 5, moraleChange: +12, xpReward: 20,
+                    nextScenario: "at_training_infantry_final"
+                }
+            },
+            {
+                text: "Hochgebirgsschießen mit Ballistikkorrektur",
+                outcome: {
+                    text: "Hangabwärts schießen, Höhenkorrektur anwenden. Mayer: 'Die meisten schießen beim ersten Mal drüber. Ihr habt getroffen. Merkt euch das Gefühl.'",
+                    damage: 1, moraleChange: +15, xpReward: 20,
+                    nextScenario: "at_training_infantry_final"
+                }
+            }
+        ]
+    },
+
+    at_training_infantry_final: {
+        title: "August 1914 – Gebirgsinfanterie-Abschluss: Schneesturm",
+        type: "decision",
+        description: "Mitternacht. Brandtner weckt die Gruppe: 'Es schneit.' Im August, in den Karpaten. 'Perfekt. Das nennt sich Realismus.' Eine Übungsstellung im Schnee, null Sicht, Minustemperaturen.",
+        options: [
+            {
+                text: "Stellung im Schneesturm halten – jeden Schuss mit tauben Fingern",
+                outcome: {
+                    text: "Finsternis und Frost. Ihr haltet. Als Brandtner abbricht: 'Ihr habt gehalten. Im echten Leben hättet ihr überlebt.' Gebirgsinfanterist – und das bedeutet etwas.",
+                    damage: 5, moraleChange: +25, xpReward: 30,
+                    grantClass: "infantry",
+                    nextScenario: "at_start"
+                }
+            }
+        ]
+    },
+
+    at_training_medic: {
+        title: "August 1914 – Sanitätsausbildung Karpaten",
+        type: "decision",
+        description: "Dr. Fink: 'Im Gebirge ist der Abtransport eines Verwundeten die eigentliche Herausforderung. Seilbahn, Trage, Schlitten – alles auf steilen Hängen.' Erste Übung: Einen achtzigkilogramm schweren 'Verwundeten' über einen 200-Meter-Hang abseilen.",
+        options: [
+            {
+                text: "Verwundeten über Seilsystem den Hang hinuntertragen",
+                outcome: {
+                    text: "Seile, Karabiner, Trage. Jeder Schritt berechnet. Der 'Verwundete' kommt unten an – unversehrt. Fink: 'Ein Abstieg im Gebirge ist schwerer als ein Aufstieg. Ihr habt es gewusst.'",
+                    damage: 3, moraleChange: +15, xpReward: 18,
+                    nextScenario: "at_training_medic_final"
+                }
+            },
+            {
+                text: "Erfrierungsbehandlung und Höhenkrankheit unter Zeitdruck",
+                outcome: {
+                    text: "Dünne Luft, Frost, Erschöpfung – die Verletzungen im Gebirge sind anders. Fink: 'Gut. Ihr denkt wie ein Gebirgssanitäter.'",
+                    damage: 0, moraleChange: +18, xpReward: 18,
+                    nextScenario: "at_training_medic_final"
+                }
+            }
+        ]
+    },
+
+    at_training_medic_final: {
+        title: "August 1914 – Sanitäts-Abschluss Karpaten",
+        type: "decision",
+        description: "Abschlussprüfung: Drei Verwundete gleichzeitig, ein Schneesturm, ein 45-Grad-Hang. Fink: 'Das Gebirge nimmt keine Rücksicht. Ihr auch nicht.'",
+        options: [
+            {
+                text: "Alle drei Verwundeten retten und abseilen",
+                outcome: {
+                    text: "Alle drei lebend unten. Fink schaut auf die Uhr, schaut auf euch, sagt nichts – und das Schweigen ist das höchste Lob. Sanitäter. Im Kaiserlichen Gebirgsdienst.",
+                    damage: 2, moraleChange: +25, xpReward: 30,
+                    grantClass: "medic",
+                    nextScenario: "at_start"
+                }
+            }
+        ]
+    },
+
+    at_training_engineer: {
+        title: "August 1914 – Pionierausbildung Karpaten",
+        type: "decision",
+        description: "Huber: 'Pioniere bauen im Gebirge Unmögliches. Kavernen in Granit, Seilbahnen über Schluchten, Sprengungen an Steilhängen.' Heute: Kaverne im Fels sprengen und sichern.",
+        options: [
+            {
+                text: "Kaverne in den Felshang sprengen und als Unterstand ausbauen",
+                outcome: {
+                    text: "Sprengung, Staubwolke, dann Stille. Aus dem Chaos entsteht ein Hohlraum, groß genug für zwölf Mann. Huber: 'Das ist alpiner Festungsbau. Kein Feind nimmt das.'",
+                    damage: 2, moraleChange: +15, xpReward: 20,
+                    nextScenario: "at_training_engineer_final"
+                }
+            },
+            {
+                text: "Seilbahn über die Schlucht spannen – Transport unter Beschuss",
+                outcome: {
+                    text: "Drahtseil, Laufwagen, Verankerung. Die Seilbahn trägt hundert Kilo Last. Huber: 'Una teleferica bona salva più vite della medicina.' Eine gute Seilbahn rettet mehr Leben als Medizin.",
+                    damage: 1, moraleChange: +18, xpReward: 20,
+                    nextScenario: "at_training_engineer_final"
+                }
+            }
+        ]
+    },
+
+    at_training_engineer_final: {
+        title: "August 1914 – Pionier-Abschluss Karpaten",
+        type: "decision",
+        description: "Letzte Prüfung: Einen Steilhang durch Sprengung sichern und danach eine Seilbahn für den Verwundetentransport installieren. Vierzig Minuten. Brandtner beobachtet.",
+        options: [
+            {
+                text: "Sprengung und Seilbahn in vierzig Minuten fertigstellen",
+                outcome: {
+                    text: "Siebenunddreißig Minuten. Huber: 'Pionier. Das Gebirge gehört euch – weil ihr es gebaut habt.'",
+                    damage: 2, moraleChange: +22, xpReward: 30,
+                    grantClass: "engineer",
+                    nextScenario: "at_start"
+                }
+            }
+        ]
+    },
+
+    at_training_standschuetze: {
+        title: "August 1914 – Standschützenausbildung: Das Tiroler Erbe",
+        type: "decision",
+        description: "Brandtner: 'Ein Standschütze ist kein Soldat – er ist ein Tiroler, der für sein Tal kämpft. Das ist ein Unterschied.' Die Ausbildung ist intensiv: Klettern, Schießen, Stellen bauen, Überleben im Gebirge.",
+        options: [
+            {
+                text: "Hochgebirgsschießen auf 500 Meter vom Grat",
+                outcome: {
+                    text: "Wind, Kälte, Abgrund – ihr schießt vom Felsvorsprung. Treffer auf 500 Meter. Brandtner: 'Ein Tiroler trifft. Das ist kein Können – das ist Geburtsrecht.'",
+                    damage: 0, moraleChange: +20, xpReward: 22,
+                    nextScenario: "at_training_standschuetze_final"
+                }
+            },
+            {
+                text: "Scharfschützenposition im Fels anlegen und tarnen",
+                outcome: {
+                    text: "Steine, Moos, Schneereste. Brandtner sucht euch zehn Minuten. Als er aufgibt: 'Gut. Wenn man euch nicht sieht, ist der Feind bereits besiegt.'",
+                    damage: 0, moraleChange: +18, xpReward: 22,
+                    nextScenario: "at_training_standschuetze_final"
+                }
+            }
+        ]
+    },
+
+    at_training_standschuetze_final: {
+        title: "August 1914 – Standschützen-Abschluss: Die große Probe",
+        type: "decision",
+        description: "Brandtner weckt die Gruppe um Mitternacht. 'La Grande Prova. Aufstieg, Stellung halten, Abstieg. Wenn ihr zurückkommt, seid ihr Standschützen.' Kein Zurück.",
+        options: [
+            {
+                text: "Aufstieg, Stellung halten, Abstieg – ohne aufzugeben",
+                outcome: {
+                    text: "Zehn Stunden. Eis, Dunkel, Schüsse. Als ihr das Lager erreicht, stehen die alten Standschützen Spalier. Brandtner sagt drei Wörter: 'Willkommen, Standschütze.'",
+                    damage: 5, moraleChange: +30, xpReward: 40,
+                    grantClass: "standschuetze",
+                    nextScenario: "at_start"
+                }
+            }
+        ]
+    },
+
+    // ==========================================================
+    // RUSSLAND — 3 Klassenwege
+    // ==========================================================
+    ru_training: {
+        title: "August 1914 – Krasnoje Selo: Ausbildungswahl",
+        type: "decision",
+        description: "Feldwebel Sorokin: 'Russland hat nicht genug Gewehre. Aber wir haben Männer. Und wir haben Bajonette.' Drei Ausbildungswege stehen offen – in einer Armee, die von chronischem Mangel geprägt ist.",
+        options: [
+            {
+                text: "Infanterist: Bajonett-Drill, Massenangriff, Schützenreihe",
+                outcome: {
+                    text: "Sorokin gibt euch das Dreilinien-Bajonett. 'Die Kugel ist eine Närrin – das Bajonett ist ein Kerl.' Beginn des härtesten Drills.",
+                    damage: 3, moraleChange: +10, xpReward: 10,
+                    nextScenario: "ru_training_infantry"
+                }
+            },
+            {
+                text: "Sanitäter: Feldmedizin bei chronischem Mangel",
+                outcome: {
+                    text: "Militärarzt Woronin: 'In Russland haben wir keine Morphin-Reserven, keine Verbände im Überfluss. Ihr lernt, mit nichts das Unmögliche zu tun.'",
+                    damage: 0, moraleChange: +8, xpReward: 10,
+                    nextScenario: "ru_training_medic"
+                }
+            },
+            {
+                text: "Fernmelder: Telegrafie und Feldkommunikation in der Steppe",
+                outcome: {
+                    text: "Sergeant Petrow: 'Die Ostfront ist endlos. Ohne Kommunikation verliert die größte Armee der Welt. Ihr seid der Faden, der alles zusammenhält.'",
+                    damage: 0, moraleChange: +8, xpReward: 10,
+                    nextScenario: "ru_training_fernmelder"
+                }
+            }
+        ]
+    },
+
+    ru_training_infantry: {
+        title: "August 1914 – Bajonett-Ausbildung Krasnoje Selo",
+        type: "decision",
+        description: "Sorokin: 'Dawai! Dawai!' Der Drill beginnt vor Sonnenaufgang. Bajonett-Stoß, Parade, Gegenangriff. Tausend Mal. Bis die Bewegung sitzt wie Atmen.",
+        options: [
+            {
+                text: "Bajonett-Drill bis zur absoluten Erschöpfung wiederholen",
+                outcome: {
+                    text: "Jeder Muskel schmerzt. Sorokin: 'Schmerz ist Russisch. Wer keinen Schmerz kennt, kennt Russland nicht.' Am Abend sitzt der Stoß wie eine Uhrwerk.",
+                    damage: 4, moraleChange: +12, xpReward: 20,
+                    nextScenario: "ru_training_infantry_final"
+                }
+            },
+            {
+                text: "Massenangriffs-Koordination: Wellen einteilen und führen",
+                outcome: {
+                    text: "Ihr führt die zweite Welle, wartet auf die richtige Lücke. Sorokin: 'Ein denkender Soldat ist Russlands bestes Werkzeug. Ihr denkt – das ist selten.'",
+                    damage: 1, moraleChange: +18, xpReward: 20,
+                    nextScenario: "ru_training_infantry_final"
+                }
+            }
+        ]
+    },
+
+    ru_training_infantry_final: {
+        title: "August 1914 – Infanterie-Abschluss: Massenangriffssimulation",
+        type: "decision",
+        description: "Sorokin: 'Russland gewinnt durch Unerbittlichkeit. Wir greifen an. Wenn die erste Welle fällt, kommt die zweite.' Zweihundert Mann, ein Befehl: Vorwärts.",
+        options: [
+            {
+                text: "In der Sturmwelle vorwärtsstürmen – egal was kommt",
+                outcome: {
+                    text: "Laufen, fallen, aufstehen, weiter. Als Sorokin stoppt: 'Soldat. Mutiger, dummer Mut – aber Mut. Das ist Russland.' Infanterist der Kaiserlichen Armee.",
+                    damage: 5, moraleChange: +22, xpReward: 30,
+                    grantClass: "infantry",
+                    nextScenario: "ru_start"
+                }
+            }
+        ]
+    },
+
+    ru_training_medic: {
+        title: "August 1914 – Sanitätsausbildung Krasnoje Selo",
+        type: "decision",
+        description: "Woronin zeigt auf leere Regale: 'Das ist unser Sanitätslager. Leer. Ihr lernt heute, ohne Verbandsmaterial Verbände zu machen.' Provisorische Medizin ist russische Medizin.",
+        options: [
+            {
+                text: "Verwundetenversorgung mit minimalem Material",
+                outcome: {
+                    text: "Stoff vom eigenen Hemd als Verband, Ast als Schiene. Woronin: 'Russland hat wenig von allem – aber viel von Improvisation. Ihr lernt es.'",
+                    damage: 0, moraleChange: +15, xpReward: 18,
+                    nextScenario: "ru_training_medic_final"
+                }
+            },
+            {
+                text: "Verwundeten unter Angriff aus der Schusslinie retten",
+                outcome: {
+                    text: "Bajonette pfeifen, ihr kriecht zu dem Mann, schleppt ihn raus. Woronin: 'Schnell. Gut. Lebendig.' Drei Wörter – alles was zählt.",
+                    damage: 3, moraleChange: +18, xpReward: 18,
+                    nextScenario: "ru_training_medic_final"
+                }
+            }
+        ]
+    },
+
+    ru_training_medic_final: {
+        title: "August 1914 – Sanitäts-Abschluss Krasnoje Selo",
+        type: "decision",
+        description: "Woronin: 'Letzte Prüfung. Fünf Verwundete. Keine Verbandsmittel. Fünf Minuten.' Es ist gleichzeitig ein Test und die Realität der russischen Armee.",
+        options: [
+            {
+                text: "Alle fünf mit improvisierten Mitteln versorgen",
+                outcome: {
+                    text: "Alle fünf leben. Woronin: 'Sanitäter der Kaiserlichen Armee. In Russland ist das Schwerste: mit nichts das Unmögliche zu tun. Ihr habt es getan.'",
+                    damage: 0, moraleChange: +25, xpReward: 30,
+                    grantClass: "medic",
+                    nextScenario: "ru_start"
+                }
+            }
+        ]
+    },
+
+    ru_training_fernmelder: {
+        title: "August 1914 – Fernmelder-Ausbildung Krasnoje Selo",
+        type: "decision",
+        description: "Petrow: 'Die Ostfront ist breit wie drei Frankreich. Ohne Kabel und Funke ist jede Armee blind.' Erste Übung: Telegrafie-Morsecode in einem Tag.",
+        options: [
+            {
+                text: "Morsecode und Telegrafie in einem Tag lernen",
+                outcome: {
+                    text: "Punkt-Strich, Strich-Punkt. Die Finger lernen schneller als der Kopf. Petrow: 'Gut. Schnell. Ihr versteht, dass Kommunikation Geschwindigkeit ist.'",
+                    damage: 0, moraleChange: +15, xpReward: 20,
+                    nextScenario: "ru_training_fernmelder_final"
+                }
+            },
+            {
+                text: "Feldkabel über dreißig Kilometer Steppe verlegen",
+                outcome: {
+                    text: "Dreißig Kilometer. Steppe, Hitze, das Gewicht der Kabelrolle. Petrow am Ende: 'Verbindung steht.' Acht Stunden Arbeit für drei Worte.",
+                    damage: 4, moraleChange: +18, xpReward: 20,
+                    nextScenario: "ru_training_fernmelder_final"
+                }
+            }
+        ]
+    },
+
+    ru_training_fernmelder_final: {
+        title: "August 1914 – Fernmelder-Abschluss Krasnoje Selo",
+        type: "decision",
+        description: "Petrow: 'Abschluss. Artilleriekoordinaten übermitteln, Kabelbruch reparieren, Lagemeldung verschlüsseln. Gleichzeitig.' Der Befehl kommt wie ein Hammerschlag.",
+        options: [
+            {
+                text: "Alle drei Kommunikationsaufgaben simultan lösen",
+                outcome: {
+                    text: "Artillerie trifft. Kabel geflickt. Nachricht übermittelt. Petrow: 'Fernmelder. Die Armee sieht mit euren Augen.'",
+                    damage: 1, moraleChange: +22, xpReward: 30,
+                    grantClass: "fernmelder",
+                    nextScenario: "ru_start"
+                }
+            }
+        ]
+    },
+
+    // ==========================================================
+    // ITALIEN — 3 Klassenwege
+    // ==========================================================
+    it_training: {
+        title: "Mai 1915 – Belluno-Sektor: Ausbildungswahl der Alpini",
+        type: "decision",
+        description: "Tenente Conti steht vor einer sechzig Meter hohen Felswand. 'Un Alpino non teme il monte. Ein Alpino fürchtet den Berg nicht.' Drei Ausbildungswege: Kämpfer, Heiler oder Ingenieur. Der Berg entscheidet, wer bleibt.",
+        options: [
+            {
+                text: "Alpini-Kämpfer: Klettern, Gebirgsschießen, Angriff",
+                outcome: {
+                    text: "Sottotenente Ferretti nimmt euch mit zur Felswand. 'Erst klettern. Dann schießen. Dann angreifen. In dieser Reihenfolge.' Hände an den Fels.",
+                    damage: 3, moraleChange: +10, xpReward: 10,
+                    nextScenario: "it_training_infantry"
+                }
+            },
+            {
+                text: "Medico: Gebirgsmedizin, Verwundetenabseilen, Notfallchirurgie",
+                outcome: {
+                    text: "Medico Brambilla: 'Im Gebirge ist ein Verwundeter oft unerreichbar. Ihr lernt, ihn trotzdem zu retten.' Seile und Verbandsmaterial.",
+                    damage: 0, moraleChange: +8, xpReward: 10,
+                    nextScenario: "it_training_medic"
+                }
+            },
+            {
+                text: "Geniere: Seilbahnen, Sprengungen, alpine Ingenieurkunst",
+                outcome: {
+                    text: "Capitano Rossi: 'Das Geniere baut die Seilbahnen, ohne die keine Alpini-Stellung möglich ist.' Drahtseile und Sprengstoff.",
+                    damage: 2, moraleChange: +8, xpReward: 10,
+                    nextScenario: "it_training_engineer"
+                }
+            }
+        ]
+    },
+
+    it_training_infantry: {
+        title: "Mai 1915 – Alpini-Kampfausbildung Belluno",
+        type: "decision",
+        description: "Tag zwei. Klettern, schießen, wieder klettern. Ferretti: 'Ein Alpino ist Bergsteiger und Soldat gleichzeitig. Getrennt ist jeder mittelmäßig. Zusammen ist er unbesiegbar.'",
+        options: [
+            {
+                text: "Felswand ohne Sicherung erklettern und Stellung oben beziehen",
+                outcome: {
+                    text: "Zwanzig Meter ohne Sicherung. Die Hände zittern, aber der Kopf nicht. Oben: Stellung beziehen, Gelände überschauen. Ferretti: 'Non male, non male. Nicht schlecht.'",
+                    damage: 3, moraleChange: +15, xpReward: 20,
+                    nextScenario: "it_training_infantry_final"
+                }
+            },
+            {
+                text: "Hochgebirgsschießen von instabilem Felsvorsprung",
+                outcome: {
+                    text: "Kein Stativ, kein stabiler Untergrund – nur Fels und Wind. Ihr drückt ab, der Rückstoß wäre fast euer Ende. Treffer. Ferretti: 'Questo è uno sparatore di montagna.'",
+                    damage: 2, moraleChange: +18, xpReward: 20,
+                    nextScenario: "it_training_infantry_final"
+                }
+            }
+        ]
+    },
+
+    it_training_infantry_final: {
+        title: "Mai 1915 – Alpini-Abschluss: La Grande Prova",
+        type: "decision",
+        description: "Conti: 'Heute steigt ihr auf den Monte Sief – 2.424 Meter. Stellung halten. Dann runter. Wenn ihr zurückkommt, seid ihr Alpini.' Kein Zurück.",
+        options: [
+            {
+                text: "Aufstieg, Stellung, Abstieg – zehn Stunden ohne Aufgabe",
+                outcome: {
+                    text: "Zehn Stunden. Eis, Dunkel, Übungsfeuer. Als ihr das Lager erreicht, stehen die alten Alpini Spalier. Conti: 'Benvenuti, Alpini.' Willkommen.",
+                    damage: 5, moraleChange: +30, xpReward: 40,
+                    grantClass: "infantry",
+                    nextScenario: "it_start"
+                }
+            }
+        ]
+    },
+
+    it_training_medic: {
+        title: "Mai 1915 – Medico-Ausbildung Belluno",
+        type: "decision",
+        description: "Brambilla: 'Im Gebirge ist die Evakuierung eines Verwundeten oft unmöglich. Ihr lernt das Unmögliche.' Verwundete abseilen, Notfallchirurgie am Hang, Erfrierungsbehandlung.",
+        options: [
+            {
+                text: "Verwundeten am Seil den Steilhang hinuntertransportieren",
+                outcome: {
+                    text: "Achtzig Kilo, sechzig Grad Hang, zwanzig Meter. Jede Bewegung berechnet. Der Patient kommt lebend unten an. Brambilla: 'Bello. Sehr gut.'",
+                    damage: 3, moraleChange: +15, xpReward: 20,
+                    nextScenario: "it_training_medic_final"
+                }
+            },
+            {
+                text: "Notfallversorgung bei Splitterverletzung auf dem Grat",
+                outcome: {
+                    text: "Wind, Abgrund, blutende Wunde. Ihr versorgst kniend auf dem Grat, eine Hand am Fels. Brambilla: 'Nel mezzo del pericolo – nel mezzo della cura.' Inmitten der Gefahr – inmitten der Fürsorge.",
+                    damage: 1, moraleChange: +18, xpReward: 20,
+                    nextScenario: "it_training_medic_final"
+                }
+            }
+        ]
+    },
+
+    it_training_medic_final: {
+        title: "Mai 1915 – Medico-Abschluss Belluno",
+        type: "decision",
+        description: "Brambilla: 'Letzte Prüfung. Drei Verwundete, Steilhang, Nebel. Ihr seid allein.' Der Nebel senkt sich.",
+        options: [
+            {
+                text: "Alle drei Verwundeten retten und sicher abseilen",
+                outcome: {
+                    text: "Drei Stunden im Nebel. Alle drei gerettet. Conti: 'Medico degli Alpini. Der Gebirgsarzt – unentbehrlich wie der Berg selbst.'",
+                    damage: 2, moraleChange: +28, xpReward: 32,
+                    grantClass: "medic",
+                    nextScenario: "it_start"
+                }
+            }
+        ]
+    },
+
+    it_training_engineer: {
+        title: "Mai 1915 – Geniere-Ausbildung Belluno",
+        type: "decision",
+        description: "Rossi: 'Eine Seilbahn über dreihundert Meter Schlucht – das ist eure erste Aufgabe. Danach: Sprengung eines Felsvorsprungs für eine neue Stellung.' Drahtseile und Sprengstoff.",
+        options: [
+            {
+                text: "Seilbahn über die Schlucht spannen und Last tragen",
+                outcome: {
+                    text: "Drahtseil, Laufwagen, hundert Kilo Nutzlast. Die Seilbahn trägt. Rossi: 'Una teleferica buona salva più vite della medicina.' Eine gute Seilbahn rettet mehr Leben als Medizin.",
+                    damage: 1, moraleChange: +15, xpReward: 20,
+                    nextScenario: "it_training_engineer_final"
+                }
+            },
+            {
+                text: "Felsvorsprung sprengen und neue Gebirgsstellung sichern",
+                outcome: {
+                    text: "Zündschnur, Deckung, Explosion. Der Felsvorsprung bricht. Wo Stein war, ist jetzt eine Stellung. Rossi: 'Il Geniere trasforma il monte.' Der Pionier verwandelt den Berg.",
+                    damage: 2, moraleChange: +18, xpReward: 20,
+                    nextScenario: "it_training_engineer_final"
+                }
+            }
+        ]
+    },
+
+    it_training_engineer_final: {
+        title: "Mai 1915 – Geniere-Abschluss Belluno",
+        type: "decision",
+        description: "Conti: 'Letzte Prüfung. Die Seilbahn ist beschädigt – repariert sie unter simuliertem Beschuss. Dreißig Minuten.' Der Laufwagen hängt in der Mitte der Schlucht.",
+        options: [
+            {
+                text: "Seilbahn unter Beschuss reparieren und Verwundete evakuieren",
+                outcome: {
+                    text: "Zwölf Minuten. Seilbahn läuft wieder. Drei Verwundete evakuiert. Conti verneigt sich leicht – eine seltene Geste: 'Geniere. L'esercito ha bisogno di voi.'",
+                    damage: 2, moraleChange: +25, xpReward: 35,
+                    grantClass: "engineer",
+                    nextScenario: "it_start"
+                }
+            }
+        ]
+    },
+
 
     // ---- DEUTSCHLAND WESTFRONT ----
     de_west_training: {
