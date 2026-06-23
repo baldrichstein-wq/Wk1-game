@@ -21,9 +21,8 @@ export const STORY = {
             },
             {
                 text: "Logistiker unterstützen und Gepäck sortieren",
-                requiresClass: "infantry",
                 outcome: {
-                    text: "Mit eurer Muskelkraft und Disziplin helft ihr, Ordnung in das Chaos zu bringen. Der Offizier dankt euch mit extra Verpflegung.",
+                    text: "Mit Muskelkraft und Disziplin bringt ihr Ordnung in das Chaos. Der Offizier dankt euch mit extra Verpflegung.",
                     damage: 0,
                     moraleChange: +10,
                     xpReward: 10,
@@ -32,7 +31,6 @@ export const STORY = {
             },
             {
                 text: "Einen kollabierten Freiwilligen verarzten",
-                requiresClass: "medic",
                 outcome: {
                     text: "Ihr stabilisiert einen hitzegeschwächten Rekruten. Die Menge applaudiert eurem schnellen Einsatz.",
                     damage: 0,
@@ -61,7 +59,6 @@ export const STORY = {
             },
             {
                 text: "Eine Befestigung auf dem Dorfplatz errichten",
-                requiresClass: "engineer",
                 outcome: {
                     text: "Ihr baut Barrikaden aus alten Wagen und Holz. Das beruhigt die verängstigten Zivilisten.",
                     damage: 0,
@@ -90,7 +87,6 @@ export const STORY = {
             },
             {
                 text: "Einen weinenden Rekruten trösten und ihm Mut zusprechen",
-                requiresClass: "infantry",
                 outcome: {
                     text: "Ihr sprecht eurem jungen Kameraden gut zu und erinnert ihn an seine Pflicht. Seine Moral kehrt zurück.",
                     damage: 0,
@@ -101,7 +97,6 @@ export const STORY = {
             },
             {
                 text: "Den Telegrafen der Bahnhofskommandantur instand setzen",
-                requiresClass: "fernmelder",
                 outcome: {
                     text: "Ihr behebt einen kurzfristigen Ausfall. Die Abfahrtszeiten der Militärzüge können wieder koordiniert werden.",
                     damage: 0,
@@ -129,8 +124,7 @@ export const STORY = {
                 }
             },
             {
-                text: "Als Scharfschütze Zieldummies bauen und Entfernungen schätzen",
-                requiresClass: "sniper",
+                text: "Zieldummies bauen und Entfernungen schätzen",
                 outcome: {
                     text: "Ihr baut täuschend echte Zielscheiben und lernt das Gelände perfekt zu lesen.",
                     damage: 0,
@@ -141,7 +135,6 @@ export const STORY = {
             },
             {
                 text: "Ein improvisiertes Feldlazarett im Camp aufbauen",
-                requiresClass: "medic",
                 outcome: {
                     text: "Ihr organisiert Decken und Desinfektionsmittel. Erste Blasen an den Füßen der Rekruten werden sofort behandelt.",
                     damage: 0,
@@ -169,10 +162,9 @@ export const STORY = {
                 }
             },
             {
-                text: "Verstärkungen mit Holz- und Steinbarrikaden errichten",
-                requiresClass: "engineer",
+                text: "Stabile Holz- und Steinbarrikaden errichten",
                 outcome: {
-                    text: "Dank eures Fachwissens baut ihr eine stabile Barrikade, die feindlichem Gewehrfeuer standhalten wird.",
+                    text: "Ihr baut eine solide Barrikade, die feindlichem Gewehrfeuer standhalten wird.",
                     damage: 0,
                     moraleChange: +12,
                     xpReward: 10,
@@ -198,8 +190,7 @@ export const STORY = {
                 }
             },
             {
-                text: "Als Standschütze alpine Wegweiser für das Regiment zeichnen",
-                requiresClass: "standschuetze",
+                text: "Alpine Wegweiser für das Regiment zeichnen",
                 outcome: {
                     text: "Ihr zeichnet Bergpfade auf und führt eine Gruppe Tiroler sicher durch die logistische Verwirrung.",
                     damage: 0,
@@ -210,7 +201,6 @@ export const STORY = {
             },
             {
                 text: "Feldtelefone verlegen, um Übersetzungsstellen zu koppeln",
-                requiresClass: "fernmelder",
                 outcome: {
                     text: "Ihr verkabelt die Dienststellen. Dolmetscher können nun direkt zu den Gleisen gerufen werden.",
                     damage: 0,
@@ -239,7 +229,6 @@ export const STORY = {
             },
             {
                 text: "Im Wald Holzgewehre für das Training schnitzen",
-                requiresClass: "infantry",
                 outcome: {
                     text: "Ihr fertigt Übungswaffen an. So kann zumindest das Zielen und Laden geübt werden.",
                     damage: 0,
@@ -268,7 +257,6 @@ export const STORY = {
             },
             {
                 text: "Ein Seilwindensystem für den Gepäcktransport entwerfen",
-                requiresClass: "engineer",
                 outcome: {
                     text: "Ihr baut ein Flaschenzug-System auf, das die Kisten mühelos über die Schlucht hebt.",
                     damage: 0,
@@ -279,9 +267,8 @@ export const STORY = {
             },
             {
                 text: "Einen Gebirgspfad für den Aufstieg ausspähen",
-                requiresClass: "sniper",
                 outcome: {
-                    text: "Mit eurem scharfen Auge erspäht ihr einen sicheren Aufstiegspfad abseits des Felssturzes.",
+                    text: "Mit scharfem Auge erspäht ihr einen sicheren Aufstiegspfad abseits des Felssturzes.",
                     damage: 0,
                     moraleChange: +12,
                     xpReward: 10,
