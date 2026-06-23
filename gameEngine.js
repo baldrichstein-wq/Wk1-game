@@ -43,7 +43,11 @@ export class GameEngine {
 
     startScenario(scenarioDef, scenarioKey = null) {
         if (!scenarioDef) {
-            this.printLog("System: Fehler - Szenario nicht gefunden.", "logSystem");
+            if (this.ui && this.ui.logSystem) {
+                this.ui.logSystem("System: Fehler - Szenario nicht gefunden.");
+            } else {
+                console.error("System: Fehler - Szenario nicht gefunden.");
+            }
             return;
         }
 

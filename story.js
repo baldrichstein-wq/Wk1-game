@@ -2,6 +2,597 @@
 
 export const STORY = {
     // ==========================================
+    // REKRUTIERUNGSMISSIONEN (ALL FACTIONS)
+    // ==========================================
+    de_west_recruitment: {
+        title: "August 1914 - Mobilmachung in Berlin (Westfront)",
+        type: "decision",
+        description: "Der Kaiser ruft zu den Waffen. Unter großem Jubel meldet ihr euch freiwillig an der Musterungsstelle. Doch die Realität holt euch schnell ein: Der Transportzug nach Westen ist hoffnungslos überfüllt, und die logistische Hektik droht eure Truppe zu trennen.",
+        options: [
+            {
+                text: "Sich durch die Masse zum Zug drängen (Alle einsteigen!)",
+                outcome: {
+                    text: "Nach stundenlangem Schieben findet ihr einen Platz. Eure Glieder schmerzen, aber die Kameradschaft schweißt euch zusammen.",
+                    damage: 2,
+                    moraleChange: +5,
+                    xpReward: 5,
+                    nextScenario: "de_west_training"
+                }
+            },
+            {
+                text: "Logistiker unterstützen und Gepäck sortieren",
+                requiresClass: "infantry",
+                outcome: {
+                    text: "Mit eurer Muskelkraft und Disziplin helft ihr, Ordnung in das Chaos zu bringen. Der Offizier dankt euch mit extra Verpflegung.",
+                    damage: 0,
+                    moraleChange: +10,
+                    xpReward: 10,
+                    nextScenario: "de_west_training"
+                }
+            },
+            {
+                text: "Einen kollabierten Freiwilligen verarzten",
+                requiresClass: "medic",
+                outcome: {
+                    text: "Ihr stabilisiert einen hitzegeschwächten Rekruten. Die Menge applaudiert eurem schnellen Einsatz.",
+                    damage: 0,
+                    moraleChange: +15,
+                    xpReward: 10,
+                    nextScenario: "de_west_training"
+                }
+            }
+        ]
+    },
+
+    de_ost_recruitment: {
+        title: "August 1914 - Mobilmachung in Ostpreußen (Ostfront)",
+        type: "decision",
+        description: "Die Meldung über den Einmarsch der russischen Armeen löst Panik in Ostpreußen aus. Euer Regiment wird eilig mobilisiert, um die Grenze abzusichern. Lokale Bauern fliehen und blockieren die Wege.",
+        options: [
+            {
+                text: "Die Straßen räumen und Flüchtlingen helfen",
+                outcome: {
+                    text: "Mühsam leitet ihr die Fuhrwerke um. Die harte Arbeit erschöpft euch, aber ihr gewinnt den Respekt der Einheimischen.",
+                    damage: 2,
+                    moraleChange: +5,
+                    xpReward: 5,
+                    nextScenario: "de_ost_training"
+                }
+            },
+            {
+                text: "Eine Befestigung auf dem Dorfplatz errichten",
+                requiresClass: "engineer",
+                outcome: {
+                    text: "Ihr baut Barrikaden aus alten Wagen und Holz. Das beruhigt die verängstigten Zivilisten.",
+                    damage: 0,
+                    moraleChange: +12,
+                    xpReward: 10,
+                    nextScenario: "de_ost_training"
+                }
+            }
+        ]
+    },
+
+    fr_recruitment: {
+        title: "August 1914 - Die Glocken der Mobilmachung in Paris",
+        type: "decision",
+        description: "Die Kirchenglocken läuten landesweit. Als 'Poilus' zieht ihr stolz durch die Straßen von Paris, doch ein plötzlicher Regenschauer durchnässt eure roten Hosen und der Marsch zum Bahnhof wird zur Schlammschlacht.",
+        options: [
+            {
+                text: "Im Regen weitermarschieren und Lieder singen (La Marseillaise!)",
+                outcome: {
+                    text: "Die Nässe zieht in die Knochen, doch euer Gesang inspiriert die Abschied nehmenden Bürger.",
+                    damage: 3,
+                    moraleChange: +8,
+                    xpReward: 5,
+                    nextScenario: "fr_training"
+                }
+            },
+            {
+                text: "Einen weinenden Rekruten trösten und ihm Mut zusprechen",
+                requiresClass: "infantry",
+                outcome: {
+                    text: "Ihr sprecht eurem jungen Kameraden gut zu und erinnert ihn an seine Pflicht. Seine Moral kehrt zurück.",
+                    damage: 0,
+                    moraleChange: +15,
+                    xpReward: 10,
+                    nextScenario: "fr_training"
+                }
+            },
+            {
+                text: "Den Telegrafen der Bahnhofskommandantur instand setzen",
+                requiresClass: "fernmelder",
+                outcome: {
+                    text: "Ihr behebt einen kurzfristigen Ausfall. Die Abfahrtszeiten der Militärzüge können wieder koordiniert werden.",
+                    damage: 0,
+                    moraleChange: +10,
+                    xpReward: 12,
+                    nextScenario: "fr_training"
+                }
+            }
+        ]
+    },
+
+    gb_recruitment: {
+        title: "August 1914 - Kitcheners Ruf in London",
+        type: "decision",
+        description: "Lord Kitcheners Plakate hängen überall. Ihr habt euch gemeinsam mit euren Freunden im 'Pals Battalion' gemeldet. Im Trainingslager herrscht jedoch akuter Mangel an Gewehren. Ihr müsst mit Besenstielen trainieren.",
+        options: [
+            {
+                text: "Die Übungen mit improvisierten Waffen ernst nehmen",
+                outcome: {
+                    text: "Euer Ausbilder grinst grimmig über euren Eifer, aber die Grundtechniken sitzen.",
+                    damage: 1,
+                    moraleChange: +5,
+                    xpReward: 5,
+                    nextScenario: "gb_training"
+                }
+            },
+            {
+                text: "Als Scharfschütze Zieldummies bauen und Entfernungen schätzen",
+                requiresClass: "sniper",
+                outcome: {
+                    text: "Ihr baut täuschend echte Zielscheiben und lernt das Gelände perfekt zu lesen.",
+                    damage: 0,
+                    moraleChange: +12,
+                    xpReward: 10,
+                    nextScenario: "gb_training"
+                }
+            },
+            {
+                text: "Ein improvisiertes Feldlazarett im Camp aufbauen",
+                requiresClass: "medic",
+                outcome: {
+                    text: "Ihr organisiert Decken und Desinfektionsmittel. Erste Blasen an den Füßen der Rekruten werden sofort behandelt.",
+                    damage: 0,
+                    moraleChange: +10,
+                    xpReward: 10,
+                    nextScenario: "gb_training"
+                }
+            }
+        ]
+    },
+
+    be_recruitment: {
+        title: "August 1914 - Verteidigung des Festungsrings Lüttich",
+        type: "decision",
+        description: "Die Belgier mobilisieren unter König Albert I. Eure Truppe bezieht eilig Stellung im Festungsgürtel. Belgische Zivilisten versuchen verzweifelt, Barrikaden zu errichten, doch der Stacheldraht geht aus.",
+        options: [
+            {
+                text: "Mit improvisierten Mitteln Schutzzäune bauen",
+                outcome: {
+                    text: "Dornensträucher und Altmetall müssen genügen. Eure Hände sind zerkratzt, aber die Sperre steht.",
+                    damage: 3,
+                    moraleChange: +5,
+                    xpReward: 5,
+                    nextScenario: "be_training"
+                }
+            },
+            {
+                text: "Verstärkungen mit Holz- und Steinbarrikaden errichten",
+                requiresClass: "engineer",
+                outcome: {
+                    text: "Dank eures Fachwissens baut ihr eine stabile Barrikade, die feindlichem Gewehrfeuer standhalten wird.",
+                    damage: 0,
+                    moraleChange: +12,
+                    xpReward: 10,
+                    nextScenario: "be_training"
+                }
+            }
+        ]
+    },
+
+    at_recruitment: {
+        title: "August 1914 - Mobilisierung in Wien",
+        type: "decision",
+        description: "Ein Sprachengewirr herrscht auf dem Wiener Bahnhof. Rekruten aus allen Kronländern versuchen, ihre Einheiten zu finden. Ein ungarischsprachiger Soldat versteht den Befehl des Offiziers nicht und es droht eine Eskalation.",
+        options: [
+            {
+                text: "Mit Zeichensprache und Geduld schlichten",
+                outcome: {
+                    text: "Das Missverständnis klärt sich auf, doch die Verzögerung zehrt an euren Nerven.",
+                    damage: 1,
+                    moraleChange: +5,
+                    xpReward: 5,
+                    nextScenario: "at_training"
+                }
+            },
+            {
+                text: "Als Standschütze alpine Wegweiser für das Regiment zeichnen",
+                requiresClass: "standschuetze",
+                outcome: {
+                    text: "Ihr zeichnet Bergpfade auf und führt eine Gruppe Tiroler sicher durch die logistische Verwirrung.",
+                    damage: 0,
+                    moraleChange: +12,
+                    xpReward: 10,
+                    nextScenario: "at_training"
+                }
+            },
+            {
+                text: "Feldtelefone verlegen, um Übersetzungsstellen zu koppeln",
+                requiresClass: "fernmelder",
+                outcome: {
+                    text: "Ihr verkabelt die Dienststellen. Dolmetscher können nun direkt zu den Gleisen gerufen werden.",
+                    damage: 0,
+                    moraleChange: +15,
+                    xpReward: 10,
+                    nextScenario: "at_training"
+                }
+            }
+        ]
+    },
+
+    ru_recruitment: {
+        title: "August 1914 - Einberufung in Sibirien",
+        type: "decision",
+        description: "Nach tagelanger Bahnfahrt durch das riesige Reich erreicht ihr das Depot in Sankt Petersburg. Der Zuzug von Rekruten ist gigantisch, doch es gibt nicht genug Gewehre. Ihr sollt ohne Waffen marschieren lernen.",
+        options: [
+            {
+                text: "Im Gleichschritt den Geist stärken",
+                outcome: {
+                    text: "Der Marsch im Staub erschöpft die Füße, aber euer Glaube an den Zaren bleibt unerschüttert.",
+                    damage: 2,
+                    moraleChange: +5,
+                    xpReward: 5,
+                    nextScenario: "ru_training"
+                }
+            },
+            {
+                text: "Im Wald Holzgewehre für das Training schnitzen",
+                requiresClass: "infantry",
+                outcome: {
+                    text: "Ihr fertigt Übungswaffen an. So kann zumindest das Zielen und Laden geübt werden.",
+                    damage: 0,
+                    moraleChange: +12,
+                    xpReward: 10,
+                    nextScenario: "ru_training"
+                }
+            }
+        ]
+    },
+
+    it_recruitment: {
+        title: "Mai 1915 - Aufbruch in den Alpenkrieg",
+        type: "decision",
+        description: "Italien tritt verspätet in den Krieg ein. In den Voralpen bereiten sich die Alpini auf den Aufstieg vor. Ein Felssturz blockiert den schmalen Pfad für die Lasttiere.",
+        options: [
+            {
+                text: "Die Trümmer von Hand wegräumen",
+                outcome: {
+                    text: "Schwere Steine schinden eure Hände, doch der Pfad ist schließlich wieder passierbar.",
+                    damage: 3,
+                    moraleChange: +5,
+                    xpReward: 5,
+                    nextScenario: "it_training"
+                }
+            },
+            {
+                text: "Ein Seilwindensystem für den Gepäcktransport entwerfen",
+                requiresClass: "engineer",
+                outcome: {
+                    text: "Ihr baut ein Flaschenzug-System auf, das die Kisten mühelos über die Schlucht hebt.",
+                    damage: 0,
+                    moraleChange: +12,
+                    xpReward: 12,
+                    nextScenario: "it_training"
+                }
+            },
+            {
+                text: "Einen Gebirgspfad für den Aufstieg ausspähen",
+                requiresClass: "sniper",
+                outcome: {
+                    text: "Mit eurem scharfen Auge erspäht ihr einen sicheren Aufstiegspfad abseits des Felssturzes.",
+                    damage: 0,
+                    moraleChange: +12,
+                    xpReward: 10,
+                    nextScenario: "it_training"
+                }
+            }
+        ]
+    },
+
+    // ==========================================
+    // AUSBILDUNGSMISSIONEN (ALL FACTIONS)
+    // ==========================================
+    de_west_training: {
+        title: "August 1914 - Grundausbildung im Elsass (Westfront)",
+        type: "decision",
+        description: "In den Kasernen nahe der Westgrenze absolviert ihr eine harte Ausbildung unter dem Kommando eines strengen Feldwebels. Die Disziplin ist eisern. Eine Abschlussübung im Schützengrabenbau steht an.",
+        options: [
+            {
+                text: "Die Zähne zusammenbeißen und das Standard-Drillprogramm absolvieren",
+                outcome: {
+                    text: "Die Härte des Drills stählt euren Körper, schwächt aber anfangs eure Moral.",
+                    damage: 3,
+                    moraleChange: -3,
+                    xpReward: 10,
+                    nextScenario: "de_west_start"
+                }
+            },
+            {
+                text: "Ein perfektes Stellungssystem ausheben",
+                requiresClass: "engineer",
+                outcome: {
+                    text: "Euer Fachwissen beim Bau von Unterständen beeindruckt den Feldwebel. Er lobt eure Arbeit vor der Kompanie.",
+                    damage: 0,
+                    moraleChange: +15,
+                    xpReward: 20,
+                    nextScenario: "de_west_start"
+                }
+            },
+            {
+                text: "Ein Zielschießen mit dem Mauser-Gewehr durchführen",
+                requiresClass: "sniper",
+                outcome: {
+                    text: "Ihr erzielt eine perfekte Trefferserie auf 300 Meter. Der Zug schöpft Vertrauen in eure Präzision.",
+                    damage: 0,
+                    moraleChange: +10,
+                    xpReward: 20,
+                    nextScenario: "de_west_start"
+                }
+            }
+        ]
+    },
+
+    de_ost_training: {
+        title: "August 1914 - Ausbildung in der Garnison Königsberg (Ostfront)",
+        type: "decision",
+        description: "Die Zeit drängt, die Russen rücken vor. In Königsberg werdet ihr im Eiltempo an schweren Maschinengewehren ausgebildet und müsst lernen, die Nerven bei nahem Geschützfeuer zu behalten.",
+        options: [
+            {
+                text: "Das Marsch- und Ausdauertraining durchhalten",
+                outcome: {
+                    text: "Der staubige Marsch unter schwerem Gepäck fordert seinen Tribut, doch ihr steigert eure Ausdauer.",
+                    damage: 4,
+                    moraleChange: +5,
+                    xpReward: 10,
+                    nextScenario: "de_ost_start"
+                }
+            },
+            {
+                text: "Ein intensives MG-Szenario trainieren",
+                requiresClass: "infantry",
+                outcome: {
+                    text: "Ihr beherrscht den schnellen Rohrwechsel und die Zielerfassung. Euer Zug fühlt sich für das Gefecht gewappnet.",
+                    damage: 0,
+                    moraleChange: +15,
+                    xpReward: 20,
+                    nextScenario: "de_ost_start"
+                }
+            },
+            {
+                text: "Feldkabel durch simuliertes Granatfeuer verlegen",
+                requiresClass: "fernmelder",
+                outcome: {
+                    text: "Ihr stellt die Telefonverbindung unter extremen Bedingungen her. Die Offiziere loben euren Mut.",
+                    damage: 1,
+                    moraleChange: +10,
+                    xpReward: 20,
+                    nextScenario: "de_ost_start"
+                }
+            }
+        ]
+    },
+
+    fr_training: {
+        title: "August 1914 - Feldlager in Châlons-sur-Marne",
+        type: "decision",
+        description: "Inmitten von Hunderttausenden Poilus werdet ihr für den Bewegungskrieg geschult. Euer Ausbilder fordert einen schnellen Bajonettangriff auf Übungspuppen. Es geht um den offensiven Geist Frankreichs (Élan vital).",
+        options: [
+            {
+                text: "Den Sturmangriff mit lautem Gebrüll üben",
+                outcome: {
+                    text: "Ihr stürmt voran. Die Anstrengung zerrt an den Kräften, aber euer Patriotismus ist entfesselt.",
+                    damage: 2,
+                    moraleChange: +15,
+                    xpReward: 12,
+                    nextScenario: "fr_start"
+                }
+            },
+            {
+                text: "Erste-Hilfe-Kurse für Splitterwunden leiten",
+                requiresClass: "medic",
+                outcome: {
+                    text: "Ihr zeigt euren Kameraden, wie man Druckverbände anlegt. Das Vertrauen in euren Trupp wächst enorm.",
+                    damage: 0,
+                    moraleChange: +20,
+                    xpReward: 20,
+                    nextScenario: "fr_start"
+                }
+            },
+            {
+                text: "Ein Unterdrückungsfeuer mit dem Lebel-Gewehr koordinieren",
+                requiresClass: "infantry",
+                outcome: {
+                    text: "Ihr koordiniert die Schützenreihe perfekt. Eure Feuersalven liegen präzise im Ziel.",
+                    damage: 0,
+                    moraleChange: +10,
+                    xpReward: 20,
+                    nextScenario: "fr_start"
+                }
+            }
+        ]
+    },
+
+    gb_training: {
+        title: "August 1914 - Ausbildungslager Aldershot",
+        type: "decision",
+        description: "Unter dem Kommando erfahrener Veteranen des Burenkriegs lernt ihr das 'Rapid Fire' – das extrem schnelle Abfeuern des Lee-Enfield-Gewehrs. Die Briten sind stolz auf ihre unerreichte Feuerrate.",
+        options: [
+            {
+                text: "Das 'Mad Minute'-Schießen absolvieren (15 gezieles Schüsse pro Minute)",
+                outcome: {
+                    text: "Eure Finger schmerzen von der schnellen Kammerbewegung, aber eure Treffsicherheit steigt rasant.",
+                    damage: 2,
+                    moraleChange: +10,
+                    xpReward: 15,
+                    nextScenario: "gb_start"
+                }
+            },
+            {
+                text: "Als Scharfschütze eine getarnte Schützenposition anlegen",
+                requiresClass: "sniper",
+                outcome: {
+                    text: "Ihr lernt, euch mit Zweigen und Erde unsichtbar zu machen. Der Ausbilder findet euch kaum.",
+                    damage: 0,
+                    moraleChange: +15,
+                    xpReward: 20,
+                    nextScenario: "gb_start"
+                }
+            },
+            {
+                text: "Den Signal- und Flaggenkurs für Fernmelder leiten",
+                requiresClass: "fernmelder",
+                outcome: {
+                    text: "Ihr vermittelt die Grundlagen der optischen Telegrafie. Die Kommunikation im Bataillon läuft nun reibungslos.",
+                    damage: 0,
+                    moraleChange: +12,
+                    xpReward: 20,
+                    nextScenario: "gb_start"
+                }
+            }
+        ]
+    },
+
+    be_training: {
+        title: "August 1914 - Eil-Ausbildung hinter den Festungen",
+        type: "decision",
+        description: "Während draußen bereits die Kanonen dröhnen, absolviert ihr eine improvisierte Ausbildung zur Verteidigung von Hindernissen. Ihr lernt, Drahtverhaue und Barrikaden unter Zeitdruck zu sichern.",
+        options: [
+            {
+                text: "Das Graben-Verteidigungstraining durchführen",
+                outcome: {
+                    text: "Unter realistischem Gewehrfeuer übt ihr die Abwehr feindlicher Wellen. Das fordert Blut, Schweiß und Tränen.",
+                    damage: 4,
+                    moraleChange: +10,
+                    xpReward: 12,
+                    nextScenario: "be_start"
+                }
+            },
+            {
+                text: "Stacheldrahtsperren und Minenfallen verlegen",
+                requiresClass: "engineer",
+                outcome: {
+                    text: "Ihr sichert den Sektor mit Draht und Sprengmitteln. Der Zugang zur Festung ist nun tödlich blockiert.",
+                    damage: 0,
+                    moraleChange: +15,
+                    xpReward: 20,
+                    nextScenario: "be_start"
+                }
+            }
+        ]
+    },
+
+    at_training: {
+        title: "August 1914 - Gebirgsausbildung in den Karpaten",
+        type: "decision",
+        description: "In den schroffen Höhenzügen werdet ihr auf den alpinen Krieg vorbereitet. Die dünne Luft und steile Pfade machen jeden Schritt zur Qual. Der Umgang mit Seilen und Lawinensicherheit steht im Fokus.",
+        options: [
+            {
+                text: "Den mühsamen Gebirgsmarsch im Trupp absolvieren",
+                outcome: {
+                    text: "Die dünne Luft brennt in den Lungen. Doch ihr stärkt eure Kameradschaft und eure Zähigkeit.",
+                    damage: 3,
+                    moraleChange: +5,
+                    xpReward: 10,
+                    nextScenario: "at_start"
+                }
+            },
+            {
+                text: "Eine Kaverne und Unterkünfte im Fels errichten",
+                requiresClass: "standschuetze",
+                outcome: {
+                    text: "Ihr sprengt und meißelt einen sicheren Schutzraum in den Stein. Ein Meisterwerk alpiner Deckungskunst.",
+                    damage: 0,
+                    moraleChange: +20,
+                    xpReward: 20,
+                    nextScenario: "at_start"
+                }
+            },
+            {
+                text: "Eine Verwundeten-Triage im Hochgebirge simulieren",
+                requiresClass: "medic",
+                outcome: {
+                    text: "Ihr übt den Abtransport von Verwundeten über steile Seilbahnen. Eure Jungs fühlen sich im Gebirge sicher.",
+                    damage: 0,
+                    moraleChange: +15,
+                    xpReward: 20,
+                    nextScenario: "at_start"
+                }
+            }
+        ]
+    },
+
+    ru_training: {
+        title: "August 1914 - Ausbildungslager Krasnoje Selo",
+        type: "decision",
+        description: "Auf den weiten Feldern vor Sankt Petersburg werdet ihr für die Großoffensive gedrillt. Da Gewehre rar sind, lernt ihr den Bajonett-Nahkampf (Schtyk) als Hauptwaffe kennen. 'Die Kugel ist eine Närrin, das Bajonett ein Kerl!'",
+        options: [
+            {
+                text: "Den Sturmangriff mit dem Dreilinien-Bajonett drillen",
+                outcome: {
+                    text: "Im Nahkampftraining schenkt ihr euch nichts. Blaue Flecke und Schrammen zeugen vom harten Dienst.",
+                    damage: 3,
+                    moraleChange: +10,
+                    xpReward: 12,
+                    nextScenario: "ru_start"
+                }
+            },
+            {
+                text: "Ein Bajonett-Flankierungsmanöver anführen",
+                requiresClass: "infantry",
+                outcome: {
+                    text: "Mit eurer Entschlossenheit überrennt ihr den Übungsgegner an der Flanke. Der Oberst nickt anerkennend.",
+                    damage: 0,
+                    moraleChange: +18,
+                    xpReward: 20,
+                    nextScenario: "ru_start"
+                }
+            }
+        ]
+    },
+
+    it_training: {
+        title: "Mai 1915 - Alpini-Ausbildung im Belluno-Sektor",
+        type: "decision",
+        description: "Inmitten von Felswänden werdet ihr im Klettern und im Aufbau von Seilbahnen (Teleferiche) geschult. Die Ausrüstung ist schwer und der Abgrund lauert direkt neben euch.",
+        options: [
+            {
+                text: "Die Bergsteiger-Grundausbildung abschließen",
+                outcome: {
+                    text: "Ihr lernt Knoten und Tritttechniken. Die Anspannung ist hoch, aber der Höhenschwindel verfliegt.",
+                    damage: 2,
+                    moraleChange: +10,
+                    xpReward: 12,
+                    nextScenario: "it_start"
+                }
+            },
+            {
+                text: "Einen Stützpunkt mit einer Seilbrücke verbinden",
+                requiresClass: "engineer",
+                outcome: {
+                    text: "Ihr spannt die Drahtseile über die Schlucht. Schwere Lasten können nun sicher transportiert werden.",
+                    damage: 0,
+                    moraleChange: +18,
+                    xpReward: 20,
+                    nextScenario: "it_start"
+                }
+            },
+            {
+                text: "Scharfschützen-Ausbildung für den Kampf von Gipfel zu Gipfel",
+                requiresClass: "sniper",
+                outcome: {
+                    text: "Ihr lernt, den Wind und den Höhenunterschied bei Schüssen über Täler hinweg zu berechnen.",
+                    damage: 0,
+                    moraleChange: +15,
+                    xpReward: 20,
+                    nextScenario: "it_start"
+                }
+            }
+        ]
+    },
+
+    // ==========================================
     // DEUTSCHLAND - LEGACY (de)
     // ==========================================
     de_start: {

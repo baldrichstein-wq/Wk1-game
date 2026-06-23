@@ -15,5 +15,5 @@ const engine = new GameEngine(ui);
 const players = [new Player(1, "Test", "infantry")];
 engine.setPlayers(players);
 console.log("Starting scenario...");
-engine.startScenario(STORY.start);
+engine.startScenario(STORY.de_west_recruitment);
 console.log("Scenario started successfully.");

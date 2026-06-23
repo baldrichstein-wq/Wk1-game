@@ -629,10 +629,10 @@ class UIController {
         this.sound.startArtilleryBackground();
         this.logSystem("System initialisiert. Verbindung zur Front steht.");
         
-        this.currentScenarioKey = this.faction + '_start';
+        this.currentScenarioKey = this.faction + '_recruitment';
         if (this.faction === 'de') {
             this.selectedFront = document.getElementById('front-select').value || 'west';
-            this.currentScenarioKey = 'de_' + this.selectedFront + '_start';
+            this.currentScenarioKey = 'de_' + this.selectedFront + '_recruitment';
         }
         this.saveGame();
 
