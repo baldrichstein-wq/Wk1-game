@@ -16,10 +16,54 @@
         <div class="content-box">
             <h1>WK1 Pen&Paper</h1>
             <p class="subtitle">Ein kooperatives Pen & Paper Rollenspiel</p>
-            <div class="btn-group">
-                <button id="btn-continue" class="btn hidden" style="border-color: var(--accent-red); color: var(--accent-red);">Spiel fortsetzen</button>
-                <button id="btn-start" class="btn">Neuen Feldzug beginnen</button>
-                <button id="btn-hof" class="btn">Gefallene Helden</button>
+            
+            <!-- Login / Registration Form -->
+            <div id="login-container" style="max-width: 400px; margin: 20px auto; padding: 20px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.5);">
+                <h2 id="login-title" style="margin-bottom: 15px; font-size: 1.3em; border-bottom: 1px dashed var(--border-color); padding-bottom: 5px;">Militärische Anmeldung</h2>
+                
+                <!-- Toggle Tabs -->
+                <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 15px;">
+                    <button id="tab-login" class="btn-small" style="flex: 1; padding: 5px;">Anmelden</button>
+                    <button id="tab-register" class="btn-small btn-secondary" style="flex: 1; padding: 5px;">Registrieren</button>
+                </div>
+
+                <!-- Input Fields -->
+                <div class="form-group" style="text-align: left; margin-bottom: 10px;">
+                    <label for="login-username" style="font-size: 0.9em;">Soldatenname / Kennung:</label>
+                    <input type="text" id="login-username" class="input-field" placeholder="z.B. admin" autocomplete="username">
+                </div>
+                <div class="form-group" style="text-align: left; margin-bottom: 10px;">
+                    <label for="login-password" style="font-size: 0.9em;">Militärisches Passwort:</label>
+                    <input type="password" id="login-password" class="input-field" placeholder="Passwort" autocomplete="current-password">
+                </div>
+                
+                <div id="login-error" style="color: var(--accent-red); font-size: 0.85em; margin: 10px 0; font-weight: bold; min-height: 18px; text-align: center;"></div>
+
+                <button id="btn-login-submit" class="btn" style="width: 100%; padding: 8px;">Anmelden</button>
+            </div>
+
+            <!-- Welcome Info (Hidden initially) -->
+            <div id="welcome-container" class="hidden" style="margin-bottom: 0px;">
+                <p style="font-size: 1.1em; color: var(--text-color);">
+                    Willkommen an der Front, Soldat <span id="current-user-display" style="font-weight: bold; color: var(--accent-red);">[Unbekannt]</span>!
+                </p>
+                <button id="btn-logout" class="btn-small" style="margin-top: 10px; border-color: #666; color: #aaa; padding: 3px 10px;">Abmelden</button>
+            </div>
+
+            <!-- Main Menu Buttons (Hidden until login) -->
+            <div id="start-buttons" class="hidden" style="margin-top: 0px; display: flex; flex-direction: column; gap: 15px; max-width: 450px; margin-left: auto; margin-right: auto; width: 100%;">
+                <div class="menu-item-card hidden" id="card-continue" style="border: 1px solid var(--border-color); padding: 15px; background: rgba(0,0,0,0.4); text-align: left; transition: all 0.3s; border-radius: 4px;">
+                    <button id="btn-continue" class="btn hidden" style="margin: 0 0 10px 0; width: 100%; border-color: var(--accent-red); color: var(--accent-red);">Spiel fortsetzen</button>
+                    <div style="font-size: 0.8em; color: #9b8e7d; line-height: 1.3; font-family: var(--font-text);">Setze deine aktive Kampagne an der Frontlinie fort. Alle Rekruten und Fortschritte werden geladen.</div>
+                </div>
+                <div class="menu-item-card" style="border: 1px solid var(--border-color); padding: 15px; background: rgba(0,0,0,0.4); text-align: left; transition: all 0.3s; border-radius: 4px;">
+                    <button id="btn-start" class="btn" style="margin: 0 0 10px 0; width: 100%;">Neuen Feldzug beginnen</button>
+                    <div style="font-size: 0.8em; color: #9b8e7d; line-height: 1.3; font-family: var(--font-text);">Erstelle frische Rekruten, wähle Klasse und Startausrüstung, und ziehe in den Krieg.</div>
+                </div>
+                <div class="menu-item-card" style="border: 1px solid var(--border-color); padding: 15px; background: rgba(0,0,0,0.4); text-align: left; transition: all 0.3s; border-radius: 4px;">
+                    <button id="btn-hof" class="btn" style="margin: 0 0 10px 0; width: 100%;">Gefallene Helden</button>
+                    <div style="font-size: 0.8em; color: #9b8e7d; line-height: 1.3; font-family: var(--font-text);">Ehre die gefallenen Soldaten, die ihr Leben auf den Schlachtfeldern gelassen haben.</div>
+                </div>
             </div>
         </div>
     </div>
@@ -29,7 +73,7 @@
         <div class="content-box">
             <h2>Musterung</h2>
             <div class="form-group">
-                <label for="faction-select">Fraktion (Gilt für die gesamte Gruppe):</label>
+                <label for="faction-select">Haupt-Fraktion (Bestimmt die Story-Kampagne):</label>
                 <select id="faction-select" class="input-field" style="margin-bottom: 15px;">
                     <option value="de">Deutsches Reich (+1 Waffenschaden)</option>
                     <option value="fr">Frankreich (+5 Maximale Moral)</option>
@@ -76,6 +120,8 @@
             </div>
         </header>
 
+        <div id="active-player-banner" class="hidden"></div>
+
         <main>
             <!-- Stats Panel (Left/Top) -->
             <section id="stats-panel">
@@ -89,6 +135,7 @@
 
             <!-- Control Panel (Bottom) -->
             <section id="control-panel">
+                <div id="options-buttons-container" class="options-buttons-group"></div>
                 <div class="command-line">
                     <span class="prompt-arrow">></span>
                     <input type="text" id="user-input" autocomplete="off" placeholder="Was tut ihr? (Tippe Befehle...)" disabled>
@@ -169,6 +216,36 @@
             <div class="btn-group" style="margin-top: 20px;">
                 <button id="btn-close-hof" class="btn">Zurück</button>
                 <button id="btn-clear-hof" class="btn" style="border-color: var(--accent-red); color: var(--accent-red); font-size: 0.9em;">Friedhof leeren</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optionen Modal -->
+    <div id="options-modal" class="screen hidden" style="background: rgba(0,0,0,0.85); z-index: 150;">
+        <div class="content-box" style="max-width: 500px; border-color: var(--border-color);">
+            <h2>Optionen / Einstellungen</h2>
+            <p class="subtitle" style="color: var(--accent-red); margin-bottom: 20px;">Militärischer Funkraum</p>
+            
+            <div style="text-align: left; margin-bottom: 25px; border: 1px dashed var(--border-color); padding: 15px; background: rgba(0,0,0,0.3);">
+                <!-- Sound Toggle Option -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <label for="options-sound-toggle" style="font-weight: bold; cursor: pointer; font-size: 0.9em;">Artillerie- & Hintergrundgeräusche:</label>
+                    <input type="checkbox" id="options-sound-toggle" checked style="width: 20px; height: 20px; cursor: pointer; accent-color: var(--accent-red);">
+                </div>
+                
+                <!-- Info Section -->
+                <div style="font-size: 0.8em; line-height: 1.4; color: #9b8e7d; border-top: 1px dashed var(--border-color); padding-top: 10px; margin-top: 10px;">
+                    <strong>Feldpost-Status:</strong><br>
+                    Verbindung zum Stab: online<br>
+                    Manuelles Speichern des aktuellen Standorts sichert eure Errungenschaften. Bei Verlusten wird der Spielstand automatisch aktualisiert.
+                </div>
+            </div>
+            
+            <div id="options-feedback" style="color: var(--accent-red); font-size: 0.9em; font-weight: bold; margin-bottom: 15px; min-height: 20px; text-align: center;"></div>
+
+            <div class="btn-group" style="display: flex; gap: 15px; flex-direction: column;">
+                <button id="btn-options-save" class="btn" style="border-color: var(--accent-green); color: var(--text-color); margin: 0; padding: 10px;">Spielstand speichern</button>
+                <button id="btn-options-back" class="btn" style="margin: 0; padding: 10px;">Zurück zum Gefecht</button>
             </div>
         </div>
     </div>

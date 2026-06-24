@@ -1,7 +1,11 @@
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
+<<<<<<< HEAD
 This project is indexed by GitNexus as **Wk1-game** (159 symbols, 337 relationships, 20 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+=======
+This project is indexed by GitNexus as **Wk1-game** (166 symbols, 365 relationships, 20 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+>>>>>>> 69a2313bb8aaae5dfc8b506ceb6b4659f59e7d21
 
 > Index stale? Run `node .gitnexus/run.cjs analyze` from the project root — it auto-selects an available runner. No `.gitnexus/run.cjs` yet? `npx gitnexus analyze` (npm 11 crash → `npm i -g gitnexus`; #1939).
 
