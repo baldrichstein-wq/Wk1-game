@@ -54,6 +54,10 @@ export class GameEngine {
         // Auto-Save Trigger
         if (scenarioKey && this.ui && this.ui.saveGame) {
             this.ui.currentScenarioKey = scenarioKey;
+            const activePlayer = this.players[this.ui.turnIndex];
+            if (activePlayer) {
+                activePlayer.currentScenarioKey = scenarioKey;
+            }
             this.ui.saveGame();
         }
 
@@ -65,7 +69,8 @@ export class GameEngine {
     }
 
     hasPlayerOfClass(classId) {
-        return this.players.some(p => !p.isDead && p.classId === classId);
+        const activePlayer = this.players[this.ui.turnIndex];
+        return activePlayer && !activePlayer.isDead && activePlayer.classId === classId;
     }
 
     getClassName(classId) {
@@ -81,7 +86,8 @@ export class GameEngine {
     }
 
     hasPlayerWithSkill(skillId) {
-        return this.players.some(p => !p.isDead && p.unlockedSkills && p.unlockedSkills.includes(skillId));
+        const activePlayer = this.players[this.ui.turnIndex];
+        return activePlayer && !activePlayer.isDead && activePlayer.unlockedSkills && activePlayer.unlockedSkills.includes(skillId);
     }
 
     getSkillName(skillId) {
@@ -97,6 +103,13 @@ export class GameEngine {
     presentOptions(options) {
         if (!options || options.length === 0) return;
         this.ui.logSystem("Mögliche Aktionen:");
+        
+        // Clear previous buttons
+        const btnContainer = typeof document !== 'undefined' ? document.getElementById('options-buttons-container') : null;
+        if (btnContainer) {
+            btnContainer.innerHTML = '';
+        }
+
         options.forEach((opt, index) => {
             let text = opt.text;
             let requirementMet = true;
@@ -135,6 +148,29 @@ export class GameEngine {
                 text = reqPrefix + text + " (Nicht wählbar)";
             }
             this.ui.logSystem(`[${index + 1}] ${text}`);
+
+            // Create interactive button
+            if (btnContainer && typeof document !== 'undefined') {
+                const btn = document.createElement('button');
+                btn.className = `btn option-btn ${requirementMet ? '' : 'disabled-option'}`;
+                btn.innerHTML = `<span class="opt-num">[${index + 1}]</span> <span class="opt-text">${text}</span>`;
+                btn.disabled = !requirementMet;
+                
+                btn.onclick = () => {
+                    // Disable all buttons to prevent double-clicks
+                    const allBtns = btnContainer.querySelectorAll('.option-btn');
+                    allBtns.forEach(b => b.disabled = true);
+                    
+                    this.ui.logText(`> ${opt.text}`, 'log-dialog');
+                    this.ui.disableInput();
+                    
+                    btnContainer.innerHTML = '';
+                    
+                    // Execute outcome
+                    this.executeOutcome(opt.outcome);
+                };
+                btnContainer.appendChild(btn);
+            }
         });
         this.currentOptions = options;
         this.ui.enableInput();
@@ -151,24 +187,31 @@ export class GameEngine {
             const selectedOption = this.currentOptions[choice - 1];
             
             // Check requirements
+            const activePlayer = this.players[this.ui.turnIndex];
             if (selectedOption.requiresClass && selectedOption.requiresSkill) {
                 if (!this.hasPlayerOfClass(selectedOption.requiresClass) || !this.hasPlayerWithSkill(selectedOption.requiresSkill)) {
                     const className = this.getClassName(selectedOption.requiresClass);
                     const skillName = this.getSkillName(selectedOption.requiresSkill);
-                    this.ui.logSystem(`System: Niemand in eurer Gruppe hat die Ausbildung zum ${className} mit der Fähigkeit [${skillName}]!`);
+                    this.ui.logSystem(`System: ${activePlayer.name} hat nicht die Ausbildung zum ${className} mit der Fähigkeit [${skillName}]!`);
                     return;
                 }
             } else if (selectedOption.requiresClass && !this.hasPlayerOfClass(selectedOption.requiresClass)) {
-                this.ui.logSystem(`System: Niemand in eurer Gruppe hat die nötige Ausbildung zum ${this.getClassName(selectedOption.requiresClass)}!`);
+                this.ui.logSystem(`System: ${activePlayer.name} hat nicht die nötige Ausbildung zum ${this.getClassName(selectedOption.requiresClass)}!`);
                 return;
             } else if (selectedOption.requiresSkill && !this.hasPlayerWithSkill(selectedOption.requiresSkill)) {
                 const skillName = this.getSkillName(selectedOption.requiresSkill);
-                this.ui.logSystem(`System: Niemand in eurer Gruppe besitzt die Fähigkeit [${skillName}]!`);
+                this.ui.logSystem(`System: ${activePlayer.name} besitzt nicht die Fähigkeit [${skillName}]!`);
                 return;
             }
 
             this.ui.logText(`> ${selectedOption.text}`, 'log-dialog');
             this.ui.disableInput();
+
+            // Clear the option buttons container
+            const btnContainer = typeof document !== 'undefined' ? document.getElementById('options-buttons-container') : null;
+            if (btnContainer) {
+                btnContainer.innerHTML = '';
+            }
 
             // Execute outcome
             this.executeOutcome(selectedOption.outcome);
@@ -188,67 +231,64 @@ export class GameEngine {
                 this.ui.logText(outcome.text);
             }
 
+            const activePlayer = this.players[this.ui.turnIndex];
+            if (!activePlayer) return;
+
             // === NO DAMAGE DURING TRAINING OR RECRUITMENT ===
-            const currentKey = this.ui.currentScenarioKey || '';
+            const currentKey = activePlayer.currentScenarioKey || '';
             const isTraining = currentKey.includes('_training') || currentKey.includes('_recruitment');
 
             if (outcome.damage && !isTraining) {
-                let maxDmgTaken = 0;
-                this.players.forEach(p => {
-                    if (!p.isDead) {
-                        let actualDamage = outcome.damage;
-                        // Apply inventory effects
-                        p.inventory.forEach(itemId => {
-                            const item = ITEMS[itemId];
-                            if (item) {
-                                if (item.effect.reduceDamageAll) actualDamage -= item.effect.reduceDamageAll;
-                                if (item.effect.reduceDamage) actualDamage -= item.effect.reduceDamage;
-                            }
-                        });
-                        if (actualDamage < 0) actualDamage = 0;
-                        p.takeDamage(actualDamage);
-                        if (actualDamage > maxDmgTaken) maxDmgTaken = actualDamage;
-                        if (p.isDead) {
-                            this.ui.addFallenHero(p, this.currentScenario ? this.currentScenario.title : 'Unbekanntes Schlachtfeld');
+                if (!activePlayer.isDead) {
+                    let actualDamage = outcome.damage;
+                    // Apply inventory effects
+                    activePlayer.inventory.forEach(itemId => {
+                        const item = ITEMS[itemId];
+                        if (item) {
+                            if (item.effect.reduceDamageAll) actualDamage -= item.effect.reduceDamageAll;
+                            if (item.effect.reduceDamage) actualDamage -= item.effect.reduceDamage;
                         }
+                    });
+                    if (actualDamage < 0) actualDamage = 0;
+                    activePlayer.takeDamage(actualDamage);
+                    if (activePlayer.isDead) {
+                        this.ui.addFallenHero(activePlayer, this.currentScenario ? this.currentScenario.title : 'Unbekanntes Schlachtfeld');
                     }
-                });
-                this.ui.updateStats();
-                if (maxDmgTaken < outcome.damage) {
-                    this.ui.logCombat(`Ausrüstung hat den Schaden gelindert! (Max. Schaden: ${maxDmgTaken})`);
-                } else {
-                    this.ui.logCombat(`Die Gruppe erleidet ${outcome.damage} Schaden!`);
+                    this.ui.updateStats();
+                    if (actualDamage < outcome.damage) {
+                        this.ui.logCombat(`Ausrüstung hat den Schaden gelindert! (Schaden: ${actualDamage})`);
+                    } else {
+                        this.ui.logCombat(`${activePlayer.name} erleidet ${outcome.damage} Schaden!`);
+                    }
                 }
             } else if (outcome.damage && isTraining) {
                 this.ui.logSystem(`[Ausbildung] Kein echter Schaden – das ist nur eine Übung.`);
             }
 
             if (outcome.moraleChange) {
-                this.players.forEach(p => {
-                    if (!p.isDead) {
-                        let actualMorale = outcome.moraleChange;
-                        // Reduce morale loss if whistle
-                        if (actualMorale < 0) {
-                            p.inventory.forEach(itemId => {
-                                const item = ITEMS[itemId];
-                                if (item && item.effect.reduceMoraleLoss) actualMorale += item.effect.reduceMoraleLoss;
-                            });
-                            if (actualMorale > 0) actualMorale = 0;
-                        } else {
-                            // Boost morale if medical kit
-                            p.inventory.forEach(itemId => {
-                                const item = ITEMS[itemId];
-                                if (item && item.effect.passiveMorale) actualMorale += item.effect.passiveMorale;
-                            });
-                        }
-                        p.changeMorale(actualMorale);
+                if (!activePlayer.isDead) {
+                    let actualMorale = outcome.moraleChange;
+                    // Reduce morale loss if whistle
+                    if (actualMorale < 0) {
+                        activePlayer.inventory.forEach(itemId => {
+                            const item = ITEMS[itemId];
+                            if (item && item.effect.reduceMoraleLoss) actualMorale += item.effect.reduceMoraleLoss;
+                        });
+                        if (actualMorale > 0) actualMorale = 0;
+                    } else {
+                        // Boost morale if medical kit
+                        activePlayer.inventory.forEach(itemId => {
+                            const item = ITEMS[itemId];
+                            if (item && item.effect.passiveMorale) actualMorale += item.effect.passiveMorale;
+                        });
                     }
-                });
+                    activePlayer.changeMorale(actualMorale);
+                }
                 this.ui.updateStats();
                 if (outcome.moraleChange < 0) {
-                    this.ui.logCombat(`Moral sinkt.`);
+                    this.ui.logCombat(`${activePlayer.name}: Moral sinkt.`);
                 } else {
-                    this.ui.logSuccess(`Moral steigt.`);
+                    this.ui.logSuccess(`${activePlayer.name}: Moral steigt.`);
                 }
             }
             
@@ -258,13 +298,11 @@ export class GameEngine {
                 const classData = CLASSES[classId];
                 const className = classData ? classData.name : classId;
 
-                this.players.forEach(p => {
-                    if (!p.isDead) {
-                        p.classId = 'recruit'; // force wasRecruit=true so stats apply correctly
-                        p.setClass(classId);
-                        console.log(`[grantClass] ${p.name} -> classId=${p.classId}, className=${p.className}`);
-                    }
-                });
+                if (!activePlayer.isDead) {
+                    activePlayer.classId = 'recruit'; // force wasRecruit=true so stats apply correctly
+                    activePlayer.setClass(classId);
+                    console.log(`[grantClass] ${activePlayer.name} -> classId=${activePlayer.classId}, className=${activePlayer.className}`);
+                }
 
                 // Dramatic promotion message
                 const promotionMessages = {
@@ -277,7 +315,7 @@ export class GameEngine {
                 };
                 const msg = promotionMessages[classId] || `Ihr werdet als ${className} eingestuft.`;
                 this.ui.logSuccess(`\n${'═'.repeat(50)}`);
-                this.ui.logSuccess(msg);
+                this.ui.logSuccess(`${activePlayer.name}: ${msg}`);
                 this.ui.logSuccess(`Klasse freigeschaltet: ${className}`);
                 this.ui.logSuccess(`${'═'.repeat(50)}\n`);
                 this.ui.updateStats();
@@ -286,22 +324,20 @@ export class GameEngine {
             }
 
             if (outcome.xpReward) {
-                let anyLevelUp = false;
-                this.players.forEach(p => {
-                    if (!p.isDead) {
-                        let actualXp = outcome.xpReward;
-                        p.inventory.forEach(itemId => {
-                            const item = ITEMS[itemId];
-                            if (item && item.effect.bonusXp) actualXp += item.effect.bonusXp;
-                        });
-                        
-                        if (p.gainXp(actualXp)) {
-                            anyLevelUp = true;
-                            this.ui.logSuccess(`⭐ ${p.name} ist nun Level ${p.level}!`);
-                        }
+                let levelUp = false;
+                if (!activePlayer.isDead) {
+                    let actualXp = outcome.xpReward;
+                    activePlayer.inventory.forEach(itemId => {
+                        const item = ITEMS[itemId];
+                        if (item && item.effect.bonusXp) actualXp += item.effect.bonusXp;
+                    });
+                    
+                    if (activePlayer.gainXp(actualXp)) {
+                        levelUp = true;
+                        this.ui.logSuccess(`⭐ ${activePlayer.name} ist nun Level ${activePlayer.level}!`);
                     }
-                });
-                this.ui.logSystem(`Die Gruppe erhält persönliche Erfahrungspunkte.`);
+                }
+                this.ui.logSystem(`${activePlayer.name} erhält persönliche Erfahrungspunkte.`);
                 
                 // Award VP
                 if (this.ui.supplyPoints !== undefined) {
@@ -310,7 +346,7 @@ export class GameEngine {
                     this.ui.logSystem(`Die Gruppe findet ${vpReward} Versorgungspunkte (VP).`);
                 }
 
-                if (anyLevelUp) {
+                if (levelUp) {
                     this.ui.logSystem(`Nutzt den "Fähigkeiten" Button um neue Skills zu lernen!`);
                 }
                 this.ui.updateStats();
@@ -323,17 +359,25 @@ export class GameEngine {
                 return;
             }
 
+            // Determine what happens next, and cycle the turn
             if (outcome.triggerHQ) {
+                activePlayer.inHQ = true;
+                activePlayer.nextYearScenario = outcome.nextScenario;
                 setTimeout(() => {
-                    this.ui.openHQ(outcome.nextScenario);
+                    this.ui.cycleTurn();
                 }, 2500);
             } else if (outcome.nextScenario) {
+                activePlayer.currentScenarioKey = outcome.nextScenario;
                 const delay = outcome.grantClass ? 3500 : 2000;
                 setTimeout(() => {
-                    this.startScenario(STORY[outcome.nextScenario], outcome.nextScenario);
+                    this.ui.cycleTurn();
                 }, delay);
             } else {
                 this.ui.logSystem("Ende der aktuellen Mission. Wir warten auf neue Befehle.");
+                // Cycle turn anyway so other players can continue
+                setTimeout(() => {
+                    this.ui.cycleTurn();
+                }, 2000);
             }
         }, 1500);
     }

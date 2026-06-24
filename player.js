@@ -156,6 +156,8 @@ export class Player {
         this.name = name;
         this.faction = faction;
         this.regiment = regiment;
+        this.currentScenarioKey = null;
+        this.inHQ = false;
         
         // Base stats (all recruits start equal)
         this.maxHp = 20;
@@ -223,6 +225,8 @@ export class Player {
         p.inventory = json.inventory || [];
         p.damageReduction = json.damageReduction || 0;
         p.bonusDamage = json.bonusDamage || 0;
+        p.currentScenarioKey = json.currentScenarioKey || null;
+        p.inHQ = json.inHQ || false;
         return p;
     }
 
